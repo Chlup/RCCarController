@@ -1,0 +1,20 @@
+using_bundler = defined? Bundler
+unless using_bundler
+  puts "\nPlease re-run using:".red
+  puts "  bundle exec pod install\n\n"
+  exit(1)
+end
+
+source 'https://github.com/CocoaPods/Specs.git'
+
+use_frameworks!
+inhibit_all_warnings!
+install! 'cocoapods', :deterministic_uuids => false
+workspace 'RCCariOSController.xcworkspace'
+
+target :RCCariOSController do
+  platform :ios, '13.5'
+  pod 'RxSwift'
+  pod 'RxCocoa'
+end
+
