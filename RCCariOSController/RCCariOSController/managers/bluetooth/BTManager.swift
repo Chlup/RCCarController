@@ -29,6 +29,8 @@ enum BTCharacteristic: CaseIterable {
 
 protocol BTManager {
     var devicesStream: Observable<(BTDevice?, Set<BTDevice>)> { get }
+    var accelerometerDataStream: Observable<Data> { get }
+
     func start()
     func connect(to device: BTDevice)
     func disconnect()
@@ -66,7 +68,9 @@ class BTManagerImpl: NSObject {
 
     private var timer: Timer?
     private var devices = Set<BTDevice>()
-    private var outputRelay = BehaviorRelay<(BTDevice?, Set<BTDevice>)>(value: (nil, []))
+    private let outputRelay = BehaviorRelay<(BTDevice?, Set<BTDevice>)>(value: (nil, []))
+
+    private let accelerometerDataRelay = PublishRelay<Data>()
 
     private var config = BTConfig()
 
@@ -98,6 +102,11 @@ class BTManagerImpl: NSObject {
 extension BTManagerImpl: BTManager {
     var devicesStream: Observable<(BTDevice?, Set<BTDevice>)> {
         return outputRelay
+            .asObservable()
+    }
+
+    var accelerometerDataStream: Observable<Data> {
+        accelerometerDataRelay
             .asObservable()
     }
 
@@ -207,7 +216,17 @@ extension BTManagerImpl: CBPeripheralDelegate {
 
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         print("Peripheral \(peripheral.name ??? "unknown") didUpdateValueFor")
-        print(characteristic.value ??? "-no value-")
+
+        switch characteristic.uuid {
+        case BTCharacteristic.accelerometer.uuid:
+            guard let data = characteristic.value else { return }
+            accelerometerDataRelay.accept(data)
+
+        default:
+            break
+        }
+
+
     }
 
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {

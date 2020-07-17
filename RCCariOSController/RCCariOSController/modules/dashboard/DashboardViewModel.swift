@@ -7,12 +7,15 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 
 struct DashboardFlow {
     let close: () -> Void
 }
 
 protocol DashboardViewModel {
+    var accelerometerDataStream: Driver<(Int, Int)> { get }
     func start()
     func stop()
 
@@ -28,6 +31,11 @@ class DashboardViewModelImpl {
 }
 
 extension DashboardViewModelImpl: DashboardViewModel {
+    var accelerometerDataStream: Driver<(Int, Int)> {
+        return model.accelerometerDataStream
+            .asDriver(onErrorJustReturn: (0, 0))
+    }
+    
     func start() { model.start() }
     func stop() { model.stop() }
 }

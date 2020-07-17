@@ -33,6 +33,7 @@
 		34817C9624C2416500C883A1 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C9524C2416500C883A1 /* DashboardViewModel.swift */; };
 		34817C9824C2416B00C883A1 /* DashboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C9724C2416B00C883A1 /* DashboardModel.swift */; };
 		34817C9A24C242E200C883A1 /* AccelerometerDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C9924C242E200C883A1 /* AccelerometerDataManager.swift */; };
+		34817C9C24C24F0900C883A1 /* InlinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C9B24C24F0900C883A1 /* InlinationView.swift */; };
 		34CED9EE24BB93F600C49DF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CED9ED24BB93F600C49DF8 /* AppDelegate.swift */; };
 		34CED9F224BB93F600C49DF8 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CED9F124BB93F600C49DF8 /* HomeController.swift */; };
 		34CED9F724BB93F700C49DF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34CED9F624BB93F700C49DF8 /* Assets.xcassets */; };
@@ -65,6 +66,7 @@
 		34817C9524C2416500C883A1 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
 		34817C9724C2416B00C883A1 /* DashboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardModel.swift; sourceTree = "<group>"; };
 		34817C9924C242E200C883A1 /* AccelerometerDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccelerometerDataManager.swift; sourceTree = "<group>"; };
+		34817C9B24C24F0900C883A1 /* InlinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlinationView.swift; sourceTree = "<group>"; };
 		34CED9EA24BB93F600C49DF8 /* RCCariOSController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RCCariOSController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34CED9ED24BB93F600C49DF8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		34CED9F124BB93F600C49DF8 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
@@ -150,8 +152,9 @@
 			children = (
 				34817C9124C2415200C883A1 /* DashboardController.swift */,
 				34817C9324C2415B00C883A1 /* DashboardController.xib */,
-				34817C9524C2416500C883A1 /* DashboardViewModel.swift */,
 				34817C9724C2416B00C883A1 /* DashboardModel.swift */,
+				34817C9524C2416500C883A1 /* DashboardViewModel.swift */,
+				34817C9B24C24F0900C883A1 /* InlinationView.swift */,
 			);
 			path = dashboard;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				34817C9824C2416B00C883A1 /* DashboardModel.swift in Sources */,
+				34817C9C24C24F0900C883A1 /* InlinationView.swift in Sources */,
 				34CED9F224BB93F600C49DF8 /* HomeController.swift in Sources */,
 				34817C6724C0ED6C00C883A1 /* SimpleDI.swift in Sources */,
 				34817C8524C23BE900C883A1 /* HomeCell.swift in Sources */,
