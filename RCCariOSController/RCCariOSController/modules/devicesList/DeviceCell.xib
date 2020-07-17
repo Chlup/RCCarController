@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="DeviceCell" id="mnd-y4-JzE" customClass="DeviceCell" customModule="RCCariOSController" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mnd-y4-JzE" id="HCP-NO-JZr">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cXH-rM-uaN">
+                        <rect key="frame" x="358" y="7" width="46" height="30"/>
+                        <state key="normal" title="Button"/>
+                        <connections>
+                            <action selector="buttonTap" destination="mnd-y4-JzE" eventType="touchUpInside" id="cLU-fs-mPC"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="740" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kw9-G2-3Iu">
+                        <rect key="frame" x="10" y="10" width="338" height="24"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="cXH-rM-uaN" firstAttribute="leading" secondItem="Kw9-G2-3Iu" secondAttribute="trailing" constant="10" id="Bjr-ZP-4Az"/>
+                    <constraint firstItem="cXH-rM-uaN" firstAttribute="centerY" secondItem="HCP-NO-JZr" secondAttribute="centerY" id="Fee-Ui-AeN"/>
+                    <constraint firstItem="Kw9-G2-3Iu" firstAttribute="top" secondItem="HCP-NO-JZr" secondAttribute="top" constant="10" id="aaq-pP-Hdz"/>
+                    <constraint firstAttribute="bottom" secondItem="Kw9-G2-3Iu" secondAttribute="bottom" constant="10" id="cSh-t2-49y"/>
+                    <constraint firstAttribute="trailing" secondItem="cXH-rM-uaN" secondAttribute="trailing" constant="10" id="ob7-Wo-uIR"/>
+                    <constraint firstItem="Kw9-G2-3Iu" firstAttribute="leading" secondItem="HCP-NO-JZr" secondAttribute="leading" constant="10" id="rwX-uE-B8Z"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="button" destination="cXH-rM-uaN" id="kQb-i7-VGo"/>
+                <outlet property="title" destination="Kw9-G2-3Iu" id="lLF-ND-HkY"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="152.67857142857142"/>
+        </tableViewCell>
+    </objects>
+</document>

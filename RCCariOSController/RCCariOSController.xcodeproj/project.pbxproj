@@ -8,20 +8,66 @@
 
 /* Begin PBXBuildFile section */
 		0B8E9DA02D2EE779FA9EC724 /* Pods_RCCariOSController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C8F16F08E6FE77A1AAE81F /* Pods_RCCariOSController.framework */; };
+		34817C5224C0E6B400C883A1 /* HomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34817C5124C0E6B400C883A1 /* HomeController.xib */; };
+		34817C5424C0E6D300C883A1 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C5324C0E6D300C883A1 /* FlowCoordinator.swift */; };
+		34817C5624C0E6FA00C883A1 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C5524C0E6FA00C883A1 /* HomeViewModel.swift */; };
+		34817C5A24C0EC2600C883A1 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34817C5924C0EC2600C883A1 /* CoreBluetooth.framework */; };
+		34817C5E24C0ECD500C883A1 /* DevicesListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C5D24C0ECD500C883A1 /* DevicesListController.swift */; };
+		34817C6024C0ECE000C883A1 /* DevicesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C5F24C0ECE000C883A1 /* DevicesListViewModel.swift */; };
+		34817C6224C0ECE800C883A1 /* DevicesListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C6124C0ECE800C883A1 /* DevicesListModel.swift */; };
+		34817C6724C0ED6C00C883A1 /* SimpleDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C6624C0ED6C00C883A1 /* SimpleDI.swift */; };
+		34817C6924C0ED8100C883A1 /* Mutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C6824C0ED8100C883A1 /* Mutex.swift */; };
+		34817C6D24C0F10700C883A1 /* DevicesListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34817C6C24C0F0B300C883A1 /* DevicesListController.xib */; };
+		34817C6F24C0F63600C883A1 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C6E24C0F63600C883A1 /* Timer.swift */; };
+		34817C7924C212C000C883A1 /* DeviceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34817C7824C212C000C883A1 /* DeviceCell.xib */; };
+		34817C7B24C212C900C883A1 /* DeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C7A24C212C900C883A1 /* DeviceCell.swift */; };
+		34817C7F24C21E2300C883A1 /* DefaultValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C7E24C21E2300C883A1 /* DefaultValue.swift */; };
+		34817C8324C23BD800C883A1 /* HomeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34817C8224C23BD800C883A1 /* HomeCell.xib */; };
+		34817C8524C23BE900C883A1 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C8424C23BE900C883A1 /* HomeCell.swift */; };
+		34817C8724C23CE700C883A1 /* HomeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C8624C23CE700C883A1 /* HomeItem.swift */; };
+		34817C8E24C2414100C883A1 /* BTConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C8A24C2414100C883A1 /* BTConfig.swift */; };
+		34817C8F24C2414100C883A1 /* BTDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C8B24C2414100C883A1 /* BTDevice.swift */; };
+		34817C9024C2414100C883A1 /* BTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C8C24C2414100C883A1 /* BTManager.swift */; };
+		34817C9224C2415200C883A1 /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C9124C2415200C883A1 /* DashboardController.swift */; };
+		34817C9424C2415B00C883A1 /* DashboardController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34817C9324C2415B00C883A1 /* DashboardController.xib */; };
+		34817C9624C2416500C883A1 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C9524C2416500C883A1 /* DashboardViewModel.swift */; };
+		34817C9824C2416B00C883A1 /* DashboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C9724C2416B00C883A1 /* DashboardModel.swift */; };
+		34817C9A24C242E200C883A1 /* AccelerometerDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C9924C242E200C883A1 /* AccelerometerDataManager.swift */; };
 		34CED9EE24BB93F600C49DF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CED9ED24BB93F600C49DF8 /* AppDelegate.swift */; };
-		34CED9F024BB93F600C49DF8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CED9EF24BB93F600C49DF8 /* SceneDelegate.swift */; };
-		34CED9F224BB93F600C49DF8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CED9F124BB93F600C49DF8 /* ViewController.swift */; };
-		34CED9F524BB93F600C49DF8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34CED9F324BB93F600C49DF8 /* Main.storyboard */; };
+		34CED9F224BB93F600C49DF8 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CED9F124BB93F600C49DF8 /* HomeController.swift */; };
 		34CED9F724BB93F700C49DF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34CED9F624BB93F700C49DF8 /* Assets.xcassets */; };
 		34CED9FA24BB93F700C49DF8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34CED9F824BB93F700C49DF8 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		34817C5124C0E6B400C883A1 /* HomeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeController.xib; sourceTree = "<group>"; };
+		34817C5324C0E6D300C883A1 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
+		34817C5524C0E6FA00C883A1 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		34817C5924C0EC2600C883A1 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		34817C5D24C0ECD500C883A1 /* DevicesListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesListController.swift; sourceTree = "<group>"; };
+		34817C5F24C0ECE000C883A1 /* DevicesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesListViewModel.swift; sourceTree = "<group>"; };
+		34817C6124C0ECE800C883A1 /* DevicesListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesListModel.swift; sourceTree = "<group>"; };
+		34817C6624C0ED6C00C883A1 /* SimpleDI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDI.swift; sourceTree = "<group>"; };
+		34817C6824C0ED8100C883A1 /* Mutex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mutex.swift; sourceTree = "<group>"; };
+		34817C6C24C0F0B300C883A1 /* DevicesListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DevicesListController.xib; sourceTree = "<group>"; };
+		34817C6E24C0F63600C883A1 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
+		34817C7824C212C000C883A1 /* DeviceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceCell.xib; sourceTree = "<group>"; };
+		34817C7A24C212C900C883A1 /* DeviceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCell.swift; sourceTree = "<group>"; };
+		34817C7E24C21E2300C883A1 /* DefaultValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultValue.swift; sourceTree = "<group>"; };
+		34817C8224C23BD800C883A1 /* HomeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeCell.xib; sourceTree = "<group>"; };
+		34817C8424C23BE900C883A1 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
+		34817C8624C23CE700C883A1 /* HomeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeItem.swift; sourceTree = "<group>"; };
+		34817C8A24C2414100C883A1 /* BTConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTConfig.swift; sourceTree = "<group>"; };
+		34817C8B24C2414100C883A1 /* BTDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDevice.swift; sourceTree = "<group>"; };
+		34817C8C24C2414100C883A1 /* BTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTManager.swift; sourceTree = "<group>"; };
+		34817C9124C2415200C883A1 /* DashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
+		34817C9324C2415B00C883A1 /* DashboardController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DashboardController.xib; sourceTree = "<group>"; };
+		34817C9524C2416500C883A1 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
+		34817C9724C2416B00C883A1 /* DashboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardModel.swift; sourceTree = "<group>"; };
+		34817C9924C242E200C883A1 /* AccelerometerDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccelerometerDataManager.swift; sourceTree = "<group>"; };
 		34CED9EA24BB93F600C49DF8 /* RCCariOSController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RCCariOSController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34CED9ED24BB93F600C49DF8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		34CED9EF24BB93F600C49DF8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		34CED9F124BB93F600C49DF8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		34CED9F424BB93F600C49DF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		34CED9F124BB93F600C49DF8 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		34CED9F624BB93F700C49DF8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		34CED9F924BB93F700C49DF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		34CED9FB24BB93F700C49DF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -35,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34817C5A24C0EC2600C883A1 /* CoreBluetooth.framework in Frameworks */,
 				0B8E9DA02D2EE779FA9EC724 /* Pods_RCCariOSController.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -42,6 +89,91 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		34817C4D24C0E69100C883A1 /* managers */ = {
+			isa = PBXGroup;
+			children = (
+				34817C8D24C2414100C883A1 /* accelerometer */,
+				34817C8924C2414100C883A1 /* bluetooth */,
+			);
+			path = managers;
+			sourceTree = "<group>";
+		};
+		34817C4E24C0E69100C883A1 /* modules */ = {
+			isa = PBXGroup;
+			children = (
+				34817C8824C2411F00C883A1 /* dashboard */,
+				34817C4F24C0E6A400C883A1 /* devicesList */,
+				34817C5024C0E6A400C883A1 /* home */,
+			);
+			path = modules;
+			sourceTree = "<group>";
+		};
+		34817C4F24C0E6A400C883A1 /* devicesList */ = {
+			isa = PBXGroup;
+			children = (
+				34817C7A24C212C900C883A1 /* DeviceCell.swift */,
+				34817C7824C212C000C883A1 /* DeviceCell.xib */,
+				34817C5D24C0ECD500C883A1 /* DevicesListController.swift */,
+				34817C6C24C0F0B300C883A1 /* DevicesListController.xib */,
+				34817C6124C0ECE800C883A1 /* DevicesListModel.swift */,
+				34817C5F24C0ECE000C883A1 /* DevicesListViewModel.swift */,
+			);
+			path = devicesList;
+			sourceTree = "<group>";
+		};
+		34817C5024C0E6A400C883A1 /* home */ = {
+			isa = PBXGroup;
+			children = (
+				34817C8424C23BE900C883A1 /* HomeCell.swift */,
+				34817C8224C23BD800C883A1 /* HomeCell.xib */,
+				34CED9F124BB93F600C49DF8 /* HomeController.swift */,
+				34817C5124C0E6B400C883A1 /* HomeController.xib */,
+				34817C5524C0E6FA00C883A1 /* HomeViewModel.swift */,
+				34817C8624C23CE700C883A1 /* HomeItem.swift */,
+			);
+			path = home;
+			sourceTree = "<group>";
+		};
+		34817C6524C0ED6100C883A1 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				34817C7E24C21E2300C883A1 /* DefaultValue.swift */,
+				34817C6824C0ED8100C883A1 /* Mutex.swift */,
+				34817C6624C0ED6C00C883A1 /* SimpleDI.swift */,
+				34817C6E24C0F63600C883A1 /* Timer.swift */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		34817C8824C2411F00C883A1 /* dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				34817C9124C2415200C883A1 /* DashboardController.swift */,
+				34817C9324C2415B00C883A1 /* DashboardController.xib */,
+				34817C9524C2416500C883A1 /* DashboardViewModel.swift */,
+				34817C9724C2416B00C883A1 /* DashboardModel.swift */,
+			);
+			path = dashboard;
+			sourceTree = "<group>";
+		};
+		34817C8924C2414100C883A1 /* bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				34817C8A24C2414100C883A1 /* BTConfig.swift */,
+				34817C8B24C2414100C883A1 /* BTDevice.swift */,
+				34817C8C24C2414100C883A1 /* BTManager.swift */,
+			);
+			path = bluetooth;
+			sourceTree = "<group>";
+		};
+		34817C8D24C2414100C883A1 /* accelerometer */ = {
+			isa = PBXGroup;
+			children = (
+				34817C9924C242E200C883A1 /* AccelerometerDataManager.swift */,
+			);
+			path = accelerometer;
+			sourceTree = "<group>";
+		};
 		34CED9E124BB93F600C49DF8 = {
 			isa = PBXGroup;
 			children = (
@@ -64,12 +196,13 @@
 			isa = PBXGroup;
 			children = (
 				34CED9ED24BB93F600C49DF8 /* AppDelegate.swift */,
-				34CED9EF24BB93F600C49DF8 /* SceneDelegate.swift */,
-				34CED9F124BB93F600C49DF8 /* ViewController.swift */,
-				34CED9F324BB93F600C49DF8 /* Main.storyboard */,
 				34CED9F624BB93F700C49DF8 /* Assets.xcassets */,
-				34CED9F824BB93F700C49DF8 /* LaunchScreen.storyboard */,
+				34817C5324C0E6D300C883A1 /* FlowCoordinator.swift */,
 				34CED9FB24BB93F700C49DF8 /* Info.plist */,
+				34CED9F824BB93F700C49DF8 /* LaunchScreen.storyboard */,
+				34817C6524C0ED6100C883A1 /* lib */,
+				34817C4D24C0E69100C883A1 /* managers */,
+				34817C4E24C0E69100C883A1 /* modules */,
 			);
 			path = RCCariOSController;
 			sourceTree = "<group>";
@@ -77,6 +210,7 @@
 		CF1DC073A9F2754FC4C5F54E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				34817C5924C0EC2600C883A1 /* CoreBluetooth.framework */,
 				E0C8F16F08E6FE77A1AAE81F /* Pods_RCCariOSController.framework */,
 			);
 			name = Frameworks;
@@ -152,8 +286,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				34CED9FA24BB93F700C49DF8 /* LaunchScreen.storyboard in Resources */,
+				34817C6D24C0F10700C883A1 /* DevicesListController.xib in Resources */,
 				34CED9F724BB93F700C49DF8 /* Assets.xcassets in Resources */,
-				34CED9F524BB93F600C49DF8 /* Main.storyboard in Resources */,
+				34817C5224C0E6B400C883A1 /* HomeController.xib in Resources */,
+				34817C9424C2415B00C883A1 /* DashboardController.xib in Resources */,
+				34817C8324C23BD800C883A1 /* HomeCell.xib in Resources */,
+				34817C7924C212C000C883A1 /* DeviceCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,23 +344,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34CED9F224BB93F600C49DF8 /* ViewController.swift in Sources */,
+				34817C9824C2416B00C883A1 /* DashboardModel.swift in Sources */,
+				34CED9F224BB93F600C49DF8 /* HomeController.swift in Sources */,
+				34817C6724C0ED6C00C883A1 /* SimpleDI.swift in Sources */,
+				34817C8524C23BE900C883A1 /* HomeCell.swift in Sources */,
+				34817C6224C0ECE800C883A1 /* DevicesListModel.swift in Sources */,
+				34817C9624C2416500C883A1 /* DashboardViewModel.swift in Sources */,
+				34817C9224C2415200C883A1 /* DashboardController.swift in Sources */,
+				34817C9024C2414100C883A1 /* BTManager.swift in Sources */,
+				34817C7F24C21E2300C883A1 /* DefaultValue.swift in Sources */,
+				34817C5E24C0ECD500C883A1 /* DevicesListController.swift in Sources */,
+				34817C6924C0ED8100C883A1 /* Mutex.swift in Sources */,
 				34CED9EE24BB93F600C49DF8 /* AppDelegate.swift in Sources */,
-				34CED9F024BB93F600C49DF8 /* SceneDelegate.swift in Sources */,
+				34817C6024C0ECE000C883A1 /* DevicesListViewModel.swift in Sources */,
+				34817C9A24C242E200C883A1 /* AccelerometerDataManager.swift in Sources */,
+				34817C5424C0E6D300C883A1 /* FlowCoordinator.swift in Sources */,
+				34817C6F24C0F63600C883A1 /* Timer.swift in Sources */,
+				34817C5624C0E6FA00C883A1 /* HomeViewModel.swift in Sources */,
+				34817C8724C23CE700C883A1 /* HomeItem.swift in Sources */,
+				34817C8E24C2414100C883A1 /* BTConfig.swift in Sources */,
+				34817C7B24C212C900C883A1 /* DeviceCell.swift in Sources */,
+				34817C8F24C2414100C883A1 /* BTDevice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		34CED9F324BB93F600C49DF8 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				34CED9F424BB93F600C49DF8 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		34CED9F824BB93F700C49DF8 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -364,7 +512,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.chlup.RCCariOSController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -384,7 +532,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.chlup.RCCariOSController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
