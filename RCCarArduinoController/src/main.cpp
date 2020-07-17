@@ -98,42 +98,4 @@ void loop() {
   }
   
   delay(100);
-
-     // float x, y, z = 0;
-
-      //   if (IMU.accelerationAvailable()) {
-      //     IMU.readAcceleration(x, y, z);
-
-      //     float xAngle = map((int)(x*100 + 100), 0, 200, 0, 180);
-      //     Serial.print(xAngle-90);
-      //     Serial.print(" ");
-      //     Serial.print(y);
-      //     Serial.print(" ");
-      //     Serial.print(z);
-      //     Serial.println();
-      //   } else {
-      //     Serial.println("Acceleration not available");
-      //   } 
-      //   accelerometerBTChar.writeValue(x);
-  
-
-    // inputSample[0] = inputSample[1];
-    // inputSample[1] = inputSample[2];
-    // inputSample[2] = inputSample[3];
-    // inputSample[3] = inputSample[4];
-    // inputSample[4] = width;
-
-    // int outputSample[5] = {0, 0, 0, 0, 0};
-    // outputSample[0] = inputSample[0];
-
-    // for(int sample = 1; sample < 5; sample ++) {
-    //   outputSample[sample] = outputSample[sample - 1] + 
-    //   0.15 * (inputSample[sample] - outputSample[sample - 1]);
-    // }   
-
-    // inputSample[0] = outputSample[0];
-    // inputSample[1] = outputSample[1];
-    // inputSample[2] = outputSample[2];
-    // inputSample[3] = outputSample[3];
-    // inputSample[4] = outputSample[4];
 }
