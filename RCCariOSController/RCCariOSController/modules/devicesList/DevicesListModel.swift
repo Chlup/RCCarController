@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 protocol DevicesListModel {
-    var devicesStream: Observable<[BTDevice]> { get }
+    var devicesStream: Observable<BTConnectionStatus> { get }
 
     func start()
 }
@@ -27,10 +27,8 @@ class DevicesListModelImpl {
 }
 
 extension DevicesListModelImpl: DevicesListModel {
-    var devicesStream: Observable<[BTDevice]> {
-        return deps.btManager.devicesStream
-            .map { $0.1 }
-            .map { Array($0).sorted() }
+    var devicesStream: Observable<BTConnectionStatus> {
+        return deps.btManager.bluetoothConnectionStream
     }
 
     func start() { deps.btManager.start() }

@@ -18,9 +18,10 @@ Storage storage(10);
 File myFile;
 
 bool trackingSessionInProgress = false;
+bool onePositionSent = false;
 
 const unsigned long mainLoopMaxLength = 300;
-const unsigned long gpsLoopMaxLength = 100;
+const unsigned long gpsLoopMaxLength = 50;
 
 const unsigned int carID = 1;
 
@@ -37,8 +38,6 @@ void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
 
-  digitalWrite(LED_BUILTIN, HIGH);
-
   delay(3000);  
   Serial.println("Setup");
   
@@ -47,6 +46,7 @@ void setup() {
   if (!accelerometer.setup()) {
     Serial.print("Fialed to initialize accelerometer.");
     initialized = false;
+    commandCenter.accelerometerSetupError();
   }
 
   if (ble.setup()) {
@@ -59,143 +59,86 @@ void setup() {
   if (!storage.setup()) {
     Serial.println("Failed to initialize SD card.");
     initialized = false;
+    commandCenter.storageSetupError();
   }
 
-  if (initialized) {
-    digitalWrite(LED_BUILTIN, LOW);
-  } else {
+  if (!initialized) {
     Serial.println("Initialization failed. Something went horribly wrong.");
-    while (true);
   }
-
-  // if (!SD.begin(10)) {
-  //   Serial.println("initialization failed!");
-  //   return;
-  // }
-  // Serial.println("initialization done.");
-
-  // if (!SD.exists("somedir")) {
-  //   if (!SD.mkdir("somedir")) {
-  //     Serial.println("Can't create directory");
-  //   } else {
-  //     Serial.println("Directory created");
-  //   }
-  // } else {
-  //   Serial.println("Directory exists");
-  // }
-
-  // // open the file. note that only one file can be open at a time,
-  // // so you have to close this one before opening another.
-  // myFile = SD.open("somedir/test.txt", FILE_WRITE);
-  
-  // // if the file opened okay, write to it:
-  // if (myFile) {
-  //   Serial.print("Writing to test.txt...");
-  //   myFile.println("testing 1, 2, 3.");
-  // // close the file:
-  //   myFile.close();
-  //   Serial.println("done.");
-  // } else {
-  //   // if the file didn't open, print an error:
-  //   Serial.println("error opening test.txt");
-  // }
-  
-  // // re-open the file for reading:
-  // myFile = SD.open("test.txt");
-  // if (myFile) {
-  //   Serial.println("test.txt:");
-    
-  //   // read from the file until there's nothing else in it:
-  //   while (myFile.available()) {
-  //     Serial.write(myFile.read());
-  //   }
-  //   // close the file:
-  //   myFile.close();
-  // } else {
-  //   // if the file didn't open, print an error:
-  //   Serial.println("error opening test.txt");
-  // }
 }
-
 
 void loop() {
   unsigned long start = millis();
 
-  gps.readSerialData(100);
+  gps.readSerialData(gpsLoopMaxLength);
 
-  // BLEDevice btDevice = ble.central();
   bool btIsConnected = ble.isConnected();
 
-  if (commandCenter.shouldUpdateAccelerometerData() && btIsConnected) {
-      accelerometer.read();
+  bool gpsHasValidData = gps.hasValidData();
+  commandCenter.gpsHasValidData(gpsHasValidData && !gps.errorReadingGPSData());
+
+  if (gpsHasValidData && commandCenter.shouldStartGPSSession()) {
+    if (trackingSessionInProgress) {
+      if (gps.hasNewData()) {
+        if (storage.storeGPSData(gps.getData())) {
+          commandCenter.storeGPSDataFine();
+        } else {
+          commandCenter.storeGPSDataError();
+        }
+      }
+    } else {
+      trackingSessionInProgress = storage.startGPSSession(carID, gps.rawDate(), gps.rawTime());
+      if (trackingSessionInProgress) {
+        commandCenter.gpsSessionInProgress();
+      } else {
+        commandCenter.gpsSessionStopped();
+      }
+      Serial.print("Session in progress "); Serial.println(trackingSessionInProgress);
+    }
+  } else if (trackingSessionInProgress) {
+    storage.stopGPSSession();
+    trackingSessionInProgress = false;
+    commandCenter.gpsSessionStopped();
+  }
+
+  if (btIsConnected) {
+    if (commandCenter.shouldUpdateAccelerometerData()) {
+      if (accelerometer.read()) {
+        commandCenter.accelerometerReadFine();
+      } else {
+        commandCenter.accelerometerReadError();
+      }
       ble.updateAccelerometerData(accelerometer.lastX, accelerometer.lastY);
-  } 
+    } 
 
-  // const char* dir = "somedir2";
-  // if (SD.exists(dir)) {
-  //   Serial.println("Dir exists");
-  //   const char* filename = "somedir2/file.txt";
-  //   File file = SD.open(filename, FILE_WRITE);
-  //   if (file) {
-  //     if (file.write("H", sizeof(byte)) > 0) {
-  //       Serial.println("Wrote data to file.");
-  //     } else {
-  //       Serial.print("Failed to write to file: "); Serial.println(filename);
-  //     }
-  //     file.close();
-  //   } else {
-  //     Serial.println("File is not available.");
-  //   }
-  // } else {
-  //   Serial.println("Dire doesn't exist");
-  //   if (SD.mkdir(dir)) {
-  //     Serial.println("Dir created");
-  //   } else {
-  //     Serial.println("Fail to created directory");
-  //   }
-  // }
+    if (commandCenter.shouldSendCurrentPosition()) {
+      if (!onePositionSent || gps.hasNewData()) {
+        Serial.println("Sending GPS position.");
+        ble.updatePosition(gps.lastLon, gps.lastLat);
+        onePositionSent = true;
+      }
+    } else {
+        onePositionSent = false;
+    }
 
-  // if (gps.hasValidData() && commandCenter.shouldStartTrackingSession()) {
-  //   if (trackingSessionInProgress) {
-  //     if (gps.hasNewData()) {
-  //       storage.storeGPSData(gps.getData());
-  //     }
-  //   } else {
-  //     trackingSessionInProgress = storage.startGPSSession(carID, gps.rawDate(), gps.rawTime());
-  //     Serial.print("Session in progress "); Serial.println(trackingSessionInProgress);
-  //   }
-  // } else if (trackingSessionInProgress) {
-  //   storage.stopGPSSession();
-  //   trackingSessionInProgress = false;
-  // }
+    if (commandCenter.shouldUpdateStatus()) {
+      Serial.println("Updating status over BLE");
+      ble.updateStatus(commandCenter.getStatus());
+      commandCenter.didUpdateStatus();
+    }
 
-  // std::string gpsLine;
-  // if (ble.shouldLogGPSData()) {
-  // gps.readSerialData(100);
-  // TinyGPSPlus data = gps.data;
-  // gpsLine += std::to_string(data.time.hour());
-  // gpsLine += ",";
-  // gpsLine += std::to_string(data.time.minute());
-  // gpsLine += ",";
-  // gpsLine += std::to_string(data.time.second());
-  // gpsLine += ",";
-  // gpsLine += std::to_string(data.location.lng());
-  // gpsLine += ",";
-  // gpsLine += std::to_string(data.location.lat());
-  // gpsLine += ",";
-  // gpsLine += std::to_string(data.speed.kmph());
-  // gpsLine += ",";
-  // gpsLine += std::to_string(data.altitude.meters());
+    if (commandCenter.shouldUpdateHDOP() && gps.isHDOPUpdated()) {
+      Serial.println("Updating HDOP");
+      ble.updateHDOP(gps.hdop());
+    }
+  }
 
-  // Serial.println(gpsLine.c_str());
-  // Serial.println(sizeof(short));
+ 
 
-  //   // gps.printPosition();
-  // }  
-
-  unsigned long waitFor = mainLoopMaxLength - (millis() - start);
-  if (waitFor > 0) {
-    Serial.print("Wait for "); Serial.println(waitFor);
+  unsigned long loopLength = millis() - start;
+  Serial.print("Loop length: "); Serial.println(loopLength);
+  unsigned long waitFor = mainLoopMaxLength - loopLength;
+  if (waitFor > 0 && waitFor <= mainLoopMaxLength) {
     delay(waitFor);
   }
 }

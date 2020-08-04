@@ -42,6 +42,14 @@ class FlowCoordinatorImpl {
             dashboardTapped: { [weak self] in
                 guard let self = self else { return }
                 self.navigationController?.pushViewController(self.makeDashboard(), animated: true)
+            },
+            statusTapped: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(self.makeStatus(), animated: true)
+            },
+            currentPositionTapped: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(self.makeCurrentPosition(), animated: true)
             }
         )
 
@@ -67,6 +75,26 @@ class FlowCoordinatorImpl {
         let model = DashboardModelImpl()
         let viewModel = DashboardViewModelImpl(model: model, flow: flow)
         return DashboardController(viewModel: viewModel)
+    }
+
+    func makeStatus() -> UIViewController {
+        let flow = StatusFlow(
+            close: { [weak self] in self?.navigationController?.popViewController(animated: true) }
+        )
+
+        let model = StatusModelImpl()
+        let viewModel = StatusViewModelImpl(model: model, flow: flow)
+        return StatusController(viewModel: viewModel)
+    }
+
+    func makeCurrentPosition() -> UIViewController {
+        let flow = CurrentPositionFlow(
+            close: { [weak self] in self?.navigationController?.popViewController(animated: true) }
+        )
+
+        let model = CurrentPositionModelImpl()
+        let viewModel = CurrentPositionViewModelImpl(model: model, flow: flow)
+        return CurrentPositionController(viewModel: viewModel)
     }
 }
 

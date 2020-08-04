@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -28,18 +28,25 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="QjD-3X-2gF">
+                        <rect key="frame" x="371" y="12" width="20" height="20"/>
+                    </activityIndicatorView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="QjD-3X-2gF" firstAttribute="centerY" secondItem="HCP-NO-JZr" secondAttribute="centerY" id="A4z-wi-ebb"/>
                     <constraint firstItem="cXH-rM-uaN" firstAttribute="leading" secondItem="Kw9-G2-3Iu" secondAttribute="trailing" constant="10" id="Bjr-ZP-4Az"/>
                     <constraint firstItem="cXH-rM-uaN" firstAttribute="centerY" secondItem="HCP-NO-JZr" secondAttribute="centerY" id="Fee-Ui-AeN"/>
+                    <constraint firstAttribute="trailing" secondItem="QjD-3X-2gF" secondAttribute="trailing" constant="23" id="Vcf-4Q-9xm"/>
                     <constraint firstItem="Kw9-G2-3Iu" firstAttribute="top" secondItem="HCP-NO-JZr" secondAttribute="top" constant="10" id="aaq-pP-Hdz"/>
                     <constraint firstAttribute="bottom" secondItem="Kw9-G2-3Iu" secondAttribute="bottom" constant="10" id="cSh-t2-49y"/>
+                    <constraint firstItem="QjD-3X-2gF" firstAttribute="leading" secondItem="Kw9-G2-3Iu" secondAttribute="trailing" constant="23" id="m05-Q3-NPj"/>
                     <constraint firstAttribute="trailing" secondItem="cXH-rM-uaN" secondAttribute="trailing" constant="10" id="ob7-Wo-uIR"/>
                     <constraint firstItem="Kw9-G2-3Iu" firstAttribute="leading" secondItem="HCP-NO-JZr" secondAttribute="leading" constant="10" id="rwX-uE-B8Z"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="button" destination="cXH-rM-uaN" id="kQb-i7-VGo"/>
+                <outlet property="loadingIndicator" destination="QjD-3X-2gF" id="dsO-Ki-7co"/>
                 <outlet property="title" destination="Kw9-G2-3Iu" id="lLF-ND-HkY"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="152.67857142857142"/>

@@ -17,28 +17,65 @@ extension DI {
 
 enum BTCharacteristic: CaseIterable {
     case accelerometer
-    case config
-    case trackingSession
+    case command
+    case status
+    case hdop
+    case currentPosition
 
     var uuid: CBUUID {
         switch self {
         case .accelerometer: return CBUUID(string: "3178812e-f8ca-48cb-93f6-a3387bf41a63")
-        case .config: return CBUUID(string: "f6791979-f52a-4d4a-98d8-af5c3ea3cf68")
-        case .trackingSession: return CBUUID(string: "57710079-3d51-49bf-8009-5ddbc0a6ba94")
+        case .command: return CBUUID(string: "f6791979-f52a-4d4a-98d8-af5c3ea3cf68")
+        case .status: return CBUUID(string: "1faa2a5c-0825-48d0-bfa8-e15b84145116")
+        case .hdop: return CBUUID(string: "5ea3439d-c263-41ac-a74d-68015b7a7d91")
+        case .currentPosition: return CBUUID(string: "67657b6a-6291-4166-b2bb-5caa09d91f95")
         }
     }
 }
 
+enum BTConnectionState {
+    case disconnected
+    case connecting
+    case connected;
+}
+
+struct BTConnectionStatus {
+    let state: BTConnectionState
+    let connectedDevice: BTDevice?
+    let devices: [BTDevice]
+
+    static var `default`: BTConnectionStatus {
+        return BTConnectionStatus(state: .disconnected, connectedDevice: nil, devices: [])
+    }
+}
+
+enum BTCoordinateType {
+    case lon
+    case lat
+}
+
+struct BTCoordinate {
+    let type: BTCoordinateType
+    let data: Data
+}
+
+struct BTData<Type> {
+    let connectionStatus: BTConnectionStatus
+    let data: Type
+}
+
 protocol BTManager {
-    var devicesStream: Observable<(BTDevice?, Set<BTDevice>)> { get }
-    var accelerometerDataStream: Observable<Data> { get }
+    var bluetoothConnectionStream: Observable<BTConnectionStatus> { get }
+    var accelerometerDataStream: Observable<BTData<Data>> { get }
+    var statusDataStream: Observable<BTData<Data>> { get }
+    var hdopDataStream: Observable<BTData<Data>> { get }
+    var currentPositionStream: Observable<BTData<BTCoordinate>> { get }
 
     func start()
     func connect(to device: BTDevice)
     func disconnect()
 
-    func startReceivingAccelerometerData()
-    func stopReceivingAccelerometerData()
+    func updateCommand(command: Commands)
 }
 
 class BTManagerImpl: NSObject {
@@ -70,11 +107,19 @@ class BTManagerImpl: NSObject {
 
     private var timer: Timer?
     private var devices = Set<BTDevice>()
-    private let outputRelay = BehaviorRelay<(BTDevice?, Set<BTDevice>)>(value: (nil, []))
+    private let outputRelay = BehaviorRelay<BTConnectionStatus?>(value: nil)
 
-    private let accelerometerDataRelay = PublishRelay<Data>()
+    private let accelerometerDataRelay = PublishRelay<BTData<Data>>()
+    private let statusDataRelay = BehaviorRelay<BTData<Data>?>(value: nil)
+    private let hdopDataRelay = BehaviorRelay<BTData<Data>?>(value: nil)
+    private let currentPositionDataRelay = PublishRelay<BTData<BTCoordinate>>()
 
-    private var config = BTConfig()
+    private var receivedLon = false
+
+    private var state: BTConnectionState = .disconnected;
+    private var status: BTConnectionStatus {
+        return BTConnectionStatus(state: state, connectedDevice: connectedDevice, devices: Array(devices).sorted())
+    }
 
     override init() {
         super.init()
@@ -91,25 +136,35 @@ class BTManagerImpl: NSObject {
     }
 
     private func updateOutputStream() {
-        outputRelay.accept((connectedDevice, devices))
-    }
-
-    private func writeConfig() {
-        guard let characteristic = connectedDevice?.characteristics[.config] else { return }
-        print("Writing Config \(config.data.description)")
-        connectedDevice?.peripheral.writeValue(config.data, for: characteristic, type: .withResponse)
+        outputRelay.accept(status)
     }
 }
 
 extension BTManagerImpl: BTManager {
-    var devicesStream: Observable<(BTDevice?, Set<BTDevice>)> {
+    var bluetoothConnectionStream: Observable<BTConnectionStatus> {
         return outputRelay
             .asObservable()
+            .ignoreNil()
     }
 
-    var accelerometerDataStream: Observable<Data> {
-        accelerometerDataRelay
+    var accelerometerDataStream: Observable<BTData<Data>> {
+        return accelerometerDataRelay.asObservable()
+    }
+
+    var statusDataStream: Observable<BTData<Data>> {
+        return statusDataRelay
             .asObservable()
+            .ignoreNil()
+    }
+
+    var hdopDataStream: Observable<BTData<Data>> {
+        return hdopDataRelay
+            .asObservable()
+            .ignoreNil()
+    }
+
+    var currentPositionStream: Observable<BTData<BTCoordinate>> {
+        return currentPositionDataRelay.asObservable()
     }
 
     func start() {
@@ -119,6 +174,7 @@ extension BTManagerImpl: BTManager {
 
     func connect(to device: BTDevice) {
         disconnect()
+        state = .connecting
         device.isConnected = true
         device.peripheral.delegate = self
         connectedDevice = device
@@ -126,20 +182,17 @@ extension BTManagerImpl: BTManager {
     }
 
     func disconnect() {
+        state = .disconnected
         guard let device = connectedDevice else { return }
         centralManager.cancelPeripheralConnection(device.peripheral)
         device.isConnected = false
         connectedDevice = nil
     }
 
-    func startReceivingAccelerometerData() {
-        config.insert(.sendAccelerometerData)
-        writeConfig()
-    }
-
-    func stopReceivingAccelerometerData() {
-        config.remove(.sendAccelerometerData)
-        writeConfig()
+    func updateCommand(command: Commands) {
+        guard let characteristic = connectedDevice?.characteristics[.command] else { return }
+        print("Writing Commands \(command.data.description)")
+        connectedDevice?.peripheral.writeValue(command.data, for: characteristic, type: .withResponse)
     }
 }
 
@@ -175,7 +228,7 @@ extension BTManagerImpl: CBCentralManagerDelegate {
 
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         print("didDisconnectPeripheral peripheral \(peripheral.name ??? "unknown")")
-        if peripheral.identifier.uuidString == connectedDevice?.identifier {
+        if connectedDevice == nil || peripheral.identifier.uuidString == connectedDevice?.identifier {
             disconnect()
         }
     }
@@ -193,26 +246,48 @@ extension BTManagerImpl: CBPeripheralDelegate {
 
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard peripheral.identifier.uuidString == connectedDevice?.identifier else { return }
+        var recognizedCharacteristicsCount = 0
         if let characteristics = service.characteristics {
             for characteristic in characteristics {
                 switch characteristic.uuid {
                 case BTCharacteristic.accelerometer.uuid:
+                    recognizedCharacteristicsCount += 1
                     connectedDevice?.characteristics[.accelerometer] = characteristic
                     peripheral.setNotifyValue(true, for: characteristic)
                     print("Accelerometer characteristic found")
 
-                case BTCharacteristic.config.uuid:
-                    connectedDevice?.characteristics[.config] = characteristic
-                    print("Config characteristic found")
+                case BTCharacteristic.command.uuid:
+                    recognizedCharacteristicsCount += 1
+                    connectedDevice?.characteristics[.command] = characteristic
+                    print("Command characteristic found")
 
-                case BTCharacteristic.trackingSession.uuid:
-                    connectedDevice?.characteristics[.trackingSession] = characteristic
-                    print("Tracking session characteristic found.")
+                case BTCharacteristic.status.uuid:
+                    recognizedCharacteristicsCount += 1
+                    connectedDevice?.characteristics[.status] = characteristic
+                    peripheral.setNotifyValue(true, for: characteristic)
+                    print("Status characteristic found.")
+
+                case BTCharacteristic.hdop.uuid:
+                    recognizedCharacteristicsCount += 1
+                    connectedDevice?.characteristics[.hdop] = characteristic
+                    peripheral.setNotifyValue(true, for: characteristic)
+                    print("HDOP characteristic found.")
+
+                case BTCharacteristic.currentPosition.uuid:
+                    recognizedCharacteristicsCount += 1
+                    connectedDevice?.characteristics[.currentPosition] = characteristic
+                    peripheral.setNotifyValue(true, for: characteristic)
+                    print("Current position characteristic found.")
 
                 default:
                     print("Found unknown characteristic")
                 }
             }
+        }
+
+        if recognizedCharacteristicsCount == BTCharacteristic.allCases.count {
+            state = .connected
+            updateOutputStream()
         }
     }
 
@@ -226,13 +301,32 @@ extension BTManagerImpl: CBPeripheralDelegate {
         switch characteristic.uuid {
         case BTCharacteristic.accelerometer.uuid:
             guard let data = characteristic.value else { return }
-            accelerometerDataRelay.accept(data)
+            accelerometerDataRelay.accept(BTData(connectionStatus: status, data: data))
+
+        case BTCharacteristic.status.uuid:
+            guard let data = characteristic.value else { return }
+            statusDataRelay.accept(BTData(connectionStatus: status, data: data))
+
+        case BTCharacteristic.hdop.uuid:
+            guard let data = characteristic.value else { return }
+            hdopDataRelay.accept(BTData(connectionStatus: status, data: data))
+
+        case BTCharacteristic.currentPosition.uuid:
+            guard let data = characteristic.value else { return }
+            let finalData: BTData<BTCoordinate>
+            if receivedLon {
+                finalData = BTData(connectionStatus: status, data: BTCoordinate(type: .lat, data: data))
+            } else {
+                finalData = BTData(connectionStatus: status, data: BTCoordinate(type: .lon, data: data))
+            }
+
+            receivedLon = !receivedLon
+
+            currentPositionDataRelay.accept(finalData)
 
         default:
             break
         }
-
-
     }
 
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {

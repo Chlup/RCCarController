@@ -17,6 +17,7 @@ class DeviceCell: UITableViewCell {
 
     @IBOutlet var title: UILabel!
     @IBOutlet var button: UIButton!
+    @IBOutlet var loadingIndicator: UIActivityIndicatorView!
 
     var device: BTDevice?
     var flow: Flow?

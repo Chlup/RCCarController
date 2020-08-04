@@ -11,11 +11,15 @@ import Foundation
 struct HomeFlow {
     let connectTapped: () -> Void
     let dashboardTapped: () -> Void
+    let statusTapped: () -> Void
+    let currentPositionTapped: () -> Void
 }
 
 protocol HomeViewModel {
     func connectTapped()
     func dashboardTapped()
+    func statusTapped()
+    func currentPositionTapped()
 }
 
 class HomeViewModelImpl {
@@ -30,5 +34,7 @@ class HomeViewModelImpl {
 extension HomeViewModelImpl: HomeViewModel {
     func connectTapped() { flow.connectTapped() }
     func dashboardTapped() { flow.dashboardTapped() }
+    func statusTapped() { flow.statusTapped() }
+    func currentPositionTapped() { flow.currentPositionTapped() }
 }
 

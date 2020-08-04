@@ -16,7 +16,8 @@ class DevicesListController: UIViewController {
     let viewModel: DevicesListViewModel
     var bag = DisposeBag()
 
-    var devices: [BTDevice] = []
+    var status: BTConnectionStatus = .default
+    var devices: [BTDevice] { return status.devices }
 
     @IBOutlet var table: UITableView!
 
@@ -62,12 +63,12 @@ class DevicesListController: UIViewController {
 
     private func subscribeToViewModel() {
         viewModel.devicesStream
-            .drive(onNext: { [weak self] devices in self?.updateUI(with: devices) })
+            .drive(onNext: { [weak self] connectionStatus in self?.updateUI(with: connectionStatus) })
             .disposed(by: bag)
     }
 
-    private func updateUI(with devices: [BTDevice]) {
-        self.devices = devices
+    private func updateUI(with connectionStatus: BTConnectionStatus) {
+        self.status = connectionStatus
         table.reloadData()
     }
 }
@@ -87,6 +88,34 @@ extension DevicesListController: UITableViewDataSource {
         cell.title.text = "\(device.name)\n\(device.identifier)"
         cell.button.setTitle(device.isConnected ? "Disconnect" : "Connect", for: .normal)
 
+        if device.isConnected {
+            switch status.state {
+            case .connecting:
+                cell.button.isHidden = true
+                cell.loadingIndicator.startAnimating()
+
+            case .connected:
+                cell.button.isHidden = false
+                cell.button.setTitle("Disconnect", for: .normal)
+                cell.loadingIndicator.stopAnimating()
+
+            case .disconnected:
+                break
+            }
+
+        } else {
+            switch status.state {
+            case .connecting:
+                cell.button.isHidden = true
+                cell.loadingIndicator.stopAnimating()
+
+            case .connected, .disconnected:
+                cell.button.isHidden = false
+                cell.button.setTitle("Connect", for: .normal)
+                cell.loadingIndicator.stopAnimating()
+            }
+        }
+
         let flow = DeviceCell.Flow(
             buttonTap: { [weak self] device in
                 self?.viewModel.tapOnConnectButton(with: device)
@@ -95,6 +124,8 @@ extension DevicesListController: UITableViewDataSource {
         )
         cell.flow = flow
         cell.device = device
+
+
 
         return cell
     }

@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		0B8E9DA02D2EE779FA9EC724 /* Pods_RCCariOSController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C8F16F08E6FE77A1AAE81F /* Pods_RCCariOSController.framework */; };
+		3400861124D9C04D0014427E /* Observable+IgnoreNil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3400861024D9C04D0014427E /* Observable+IgnoreNil.swift */; };
+		3400861524D9C8AF0014427E /* CommandsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3400861424D9C8AF0014427E /* CommandsManager.swift */; };
+		3400861924D9CCC60014427E /* StatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3400861824D9CCC60014427E /* StatusController.swift */; };
+		3400861B24D9CCCE0014427E /* StatusController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3400861A24D9CCCE0014427E /* StatusController.xib */; };
+		3400861D24D9CCD60014427E /* StatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3400861C24D9CCD60014427E /* StatusViewModel.swift */; };
+		3400861F24D9CCDD0014427E /* StatusModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3400861E24D9CCDC0014427E /* StatusModel.swift */; };
 		34817C5224C0E6B400C883A1 /* HomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34817C5124C0E6B400C883A1 /* HomeController.xib */; };
 		34817C5424C0E6D300C883A1 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C5324C0E6D300C883A1 /* FlowCoordinator.swift */; };
 		34817C5624C0E6FA00C883A1 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C5524C0E6FA00C883A1 /* HomeViewModel.swift */; };
@@ -22,10 +28,8 @@
 		34817C7924C212C000C883A1 /* DeviceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34817C7824C212C000C883A1 /* DeviceCell.xib */; };
 		34817C7B24C212C900C883A1 /* DeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C7A24C212C900C883A1 /* DeviceCell.swift */; };
 		34817C7F24C21E2300C883A1 /* DefaultValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C7E24C21E2300C883A1 /* DefaultValue.swift */; };
-		34817C8324C23BD800C883A1 /* HomeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34817C8224C23BD800C883A1 /* HomeCell.xib */; };
 		34817C8524C23BE900C883A1 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C8424C23BE900C883A1 /* HomeCell.swift */; };
 		34817C8724C23CE700C883A1 /* HomeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C8624C23CE700C883A1 /* HomeItem.swift */; };
-		34817C8E24C2414100C883A1 /* BTConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C8A24C2414100C883A1 /* BTConfig.swift */; };
 		34817C8F24C2414100C883A1 /* BTDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C8B24C2414100C883A1 /* BTDevice.swift */; };
 		34817C9024C2414100C883A1 /* BTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C8C24C2414100C883A1 /* BTManager.swift */; };
 		34817C9224C2415200C883A1 /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C9124C2415200C883A1 /* DashboardController.swift */; };
@@ -35,6 +39,14 @@
 		34817C9A24C242E200C883A1 /* AccelerometerDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C9924C242E200C883A1 /* AccelerometerDataManager.swift */; };
 		34817C9C24C24F0900C883A1 /* InclinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34817C9B24C24F0900C883A1 /* InclinationView.swift */; };
 		34817C9E24C25B5900C883A1 /* InclinationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34817C9D24C25B5900C883A1 /* InclinationView.xib */; };
+		34B6BF3B24D9D7B200A717FE /* StatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B6BF3924D9D7B200A717FE /* StatusCell.swift */; };
+		34B6BF3D24D9D85400A717FE /* StatusItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B6BF3C24D9D85400A717FE /* StatusItem.swift */; };
+		34B6BF3E24D9D9FD00A717FE /* StatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34B6BF3A24D9D7B200A717FE /* StatusCell.xib */; };
+		34B6BF4524D9EDDE00A717FE /* CurrentPositionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B6BF4324D9ED0D00A717FE /* CurrentPositionController.swift */; };
+		34B6BF4624D9EDE300A717FE /* CurrentPositionController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34B6BF4224D9ED0D00A717FE /* CurrentPositionController.xib */; };
+		34B6BF4724D9EDE600A717FE /* CurrentPositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B6BF4024D9ED0D00A717FE /* CurrentPositionModel.swift */; };
+		34B6BF4824D9EDE800A717FE /* CurrentPositionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B6BF4124D9ED0D00A717FE /* CurrentPositionViewModel.swift */; };
+		34B6BF4A24D9F45400A717FE /* HomeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34B6BF4924D9F42000A717FE /* HomeCell.xib */; };
 		34CED9EE24BB93F600C49DF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CED9ED24BB93F600C49DF8 /* AppDelegate.swift */; };
 		34CED9F224BB93F600C49DF8 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CED9F124BB93F600C49DF8 /* HomeController.swift */; };
 		34CED9F724BB93F700C49DF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34CED9F624BB93F700C49DF8 /* Assets.xcassets */; };
@@ -42,6 +54,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3400861024D9C04D0014427E /* Observable+IgnoreNil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+IgnoreNil.swift"; sourceTree = "<group>"; };
+		3400861424D9C8AF0014427E /* CommandsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandsManager.swift; sourceTree = "<group>"; };
+		3400861824D9CCC60014427E /* StatusController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusController.swift; sourceTree = "<group>"; };
+		3400861A24D9CCCE0014427E /* StatusController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatusController.xib; sourceTree = "<group>"; };
+		3400861C24D9CCD60014427E /* StatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewModel.swift; sourceTree = "<group>"; };
+		3400861E24D9CCDC0014427E /* StatusModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusModel.swift; sourceTree = "<group>"; };
 		34817C5124C0E6B400C883A1 /* HomeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeController.xib; sourceTree = "<group>"; };
 		34817C5324C0E6D300C883A1 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
 		34817C5524C0E6FA00C883A1 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -56,10 +74,8 @@
 		34817C7824C212C000C883A1 /* DeviceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DeviceCell.xib; sourceTree = "<group>"; };
 		34817C7A24C212C900C883A1 /* DeviceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceCell.swift; sourceTree = "<group>"; };
 		34817C7E24C21E2300C883A1 /* DefaultValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultValue.swift; sourceTree = "<group>"; };
-		34817C8224C23BD800C883A1 /* HomeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeCell.xib; sourceTree = "<group>"; };
 		34817C8424C23BE900C883A1 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		34817C8624C23CE700C883A1 /* HomeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeItem.swift; sourceTree = "<group>"; };
-		34817C8A24C2414100C883A1 /* BTConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTConfig.swift; sourceTree = "<group>"; };
 		34817C8B24C2414100C883A1 /* BTDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDevice.swift; sourceTree = "<group>"; };
 		34817C8C24C2414100C883A1 /* BTManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTManager.swift; sourceTree = "<group>"; };
 		34817C9124C2415200C883A1 /* DashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
@@ -69,6 +85,14 @@
 		34817C9924C242E200C883A1 /* AccelerometerDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccelerometerDataManager.swift; sourceTree = "<group>"; };
 		34817C9B24C24F0900C883A1 /* InclinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InclinationView.swift; sourceTree = "<group>"; };
 		34817C9D24C25B5900C883A1 /* InclinationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InclinationView.xib; sourceTree = "<group>"; };
+		34B6BF3924D9D7B200A717FE /* StatusCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusCell.swift; sourceTree = "<group>"; };
+		34B6BF3A24D9D7B200A717FE /* StatusCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatusCell.xib; sourceTree = "<group>"; };
+		34B6BF3C24D9D85400A717FE /* StatusItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItem.swift; sourceTree = "<group>"; };
+		34B6BF4024D9ED0D00A717FE /* CurrentPositionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPositionModel.swift; sourceTree = "<group>"; };
+		34B6BF4124D9ED0D00A717FE /* CurrentPositionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPositionViewModel.swift; sourceTree = "<group>"; };
+		34B6BF4224D9ED0D00A717FE /* CurrentPositionController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrentPositionController.xib; sourceTree = "<group>"; };
+		34B6BF4324D9ED0D00A717FE /* CurrentPositionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPositionController.swift; sourceTree = "<group>"; };
+		34B6BF4924D9F42000A717FE /* HomeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeCell.xib; sourceTree = "<group>"; };
 		34CED9EA24BB93F600C49DF8 /* RCCariOSController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RCCariOSController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34CED9ED24BB93F600C49DF8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		34CED9F124BB93F600C49DF8 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
@@ -93,11 +117,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3400861224D9C7C50014427E /* status */ = {
+			isa = PBXGroup;
+			children = (
+				34B6BF3924D9D7B200A717FE /* StatusCell.swift */,
+				34B6BF3A24D9D7B200A717FE /* StatusCell.xib */,
+				3400861824D9CCC60014427E /* StatusController.swift */,
+				3400861A24D9CCCE0014427E /* StatusController.xib */,
+				3400861E24D9CCDC0014427E /* StatusModel.swift */,
+				3400861C24D9CCD60014427E /* StatusViewModel.swift */,
+				34B6BF3C24D9D85400A717FE /* StatusItem.swift */,
+			);
+			path = status;
+			sourceTree = "<group>";
+		};
+		3400861324D9C8A10014427E /* commands */ = {
+			isa = PBXGroup;
+			children = (
+				3400861424D9C8AF0014427E /* CommandsManager.swift */,
+			);
+			path = commands;
+			sourceTree = "<group>";
+		};
 		34817C4D24C0E69100C883A1 /* managers */ = {
 			isa = PBXGroup;
 			children = (
 				34817C8D24C2414100C883A1 /* accelerometer */,
 				34817C8924C2414100C883A1 /* bluetooth */,
+				3400861324D9C8A10014427E /* commands */,
 			);
 			path = managers;
 			sourceTree = "<group>";
@@ -105,9 +152,11 @@
 		34817C4E24C0E69100C883A1 /* modules */ = {
 			isa = PBXGroup;
 			children = (
+				34B6BF3F24D9ED0800A717FE /* currentPosition */,
 				34817C8824C2411F00C883A1 /* dashboard */,
 				34817C4F24C0E6A400C883A1 /* devicesList */,
 				34817C5024C0E6A400C883A1 /* home */,
+				3400861224D9C7C50014427E /* status */,
 			);
 			path = modules;
 			sourceTree = "<group>";
@@ -129,7 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				34817C8424C23BE900C883A1 /* HomeCell.swift */,
-				34817C8224C23BD800C883A1 /* HomeCell.xib */,
+				34B6BF4924D9F42000A717FE /* HomeCell.xib */,
 				34CED9F124BB93F600C49DF8 /* HomeController.swift */,
 				34817C5124C0E6B400C883A1 /* HomeController.xib */,
 				34817C5524C0E6FA00C883A1 /* HomeViewModel.swift */,
@@ -143,6 +192,7 @@
 			children = (
 				34817C7E24C21E2300C883A1 /* DefaultValue.swift */,
 				34817C6824C0ED8100C883A1 /* Mutex.swift */,
+				3400861024D9C04D0014427E /* Observable+IgnoreNil.swift */,
 				34817C6624C0ED6C00C883A1 /* SimpleDI.swift */,
 				34817C6E24C0F63600C883A1 /* Timer.swift */,
 			);
@@ -165,7 +215,6 @@
 		34817C8924C2414100C883A1 /* bluetooth */ = {
 			isa = PBXGroup;
 			children = (
-				34817C8A24C2414100C883A1 /* BTConfig.swift */,
 				34817C8B24C2414100C883A1 /* BTDevice.swift */,
 				34817C8C24C2414100C883A1 /* BTManager.swift */,
 			);
@@ -178,6 +227,17 @@
 				34817C9924C242E200C883A1 /* AccelerometerDataManager.swift */,
 			);
 			path = accelerometer;
+			sourceTree = "<group>";
+		};
+		34B6BF3F24D9ED0800A717FE /* currentPosition */ = {
+			isa = PBXGroup;
+			children = (
+				34B6BF4324D9ED0D00A717FE /* CurrentPositionController.swift */,
+				34B6BF4224D9ED0D00A717FE /* CurrentPositionController.xib */,
+				34B6BF4024D9ED0D00A717FE /* CurrentPositionModel.swift */,
+				34B6BF4124D9ED0D00A717FE /* CurrentPositionViewModel.swift */,
+			);
+			path = currentPosition;
 			sourceTree = "<group>";
 		};
 		34CED9E124BB93F600C49DF8 = {
@@ -291,13 +351,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3400861B24D9CCCE0014427E /* StatusController.xib in Resources */,
+				34B6BF3E24D9D9FD00A717FE /* StatusCell.xib in Resources */,
 				34CED9FA24BB93F700C49DF8 /* LaunchScreen.storyboard in Resources */,
 				34817C6D24C0F10700C883A1 /* DevicesListController.xib in Resources */,
 				34CED9F724BB93F700C49DF8 /* Assets.xcassets in Resources */,
 				34817C5224C0E6B400C883A1 /* HomeController.xib in Resources */,
 				34817C9424C2415B00C883A1 /* DashboardController.xib in Resources */,
-				34817C8324C23BD800C883A1 /* HomeCell.xib in Resources */,
 				34817C7924C212C000C883A1 /* DeviceCell.xib in Resources */,
+				34B6BF4A24D9F45400A717FE /* HomeCell.xib in Resources */,
+				34B6BF4624D9EDE300A717FE /* CurrentPositionController.xib in Resources */,
 				34817C9E24C25B5900C883A1 /* InclinationView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,27 +415,36 @@
 			buildActionMask = 2147483647;
 			files = (
 				34817C9824C2416B00C883A1 /* DashboardModel.swift in Sources */,
+				3400861F24D9CCDD0014427E /* StatusModel.swift in Sources */,
+				3400861924D9CCC60014427E /* StatusController.swift in Sources */,
 				34817C9C24C24F0900C883A1 /* InclinationView.swift in Sources */,
 				34CED9F224BB93F600C49DF8 /* HomeController.swift in Sources */,
 				34817C6724C0ED6C00C883A1 /* SimpleDI.swift in Sources */,
 				34817C8524C23BE900C883A1 /* HomeCell.swift in Sources */,
+				34B6BF3B24D9D7B200A717FE /* StatusCell.swift in Sources */,
 				34817C6224C0ECE800C883A1 /* DevicesListModel.swift in Sources */,
 				34817C9624C2416500C883A1 /* DashboardViewModel.swift in Sources */,
 				34817C9224C2415200C883A1 /* DashboardController.swift in Sources */,
 				34817C9024C2414100C883A1 /* BTManager.swift in Sources */,
+				34B6BF4724D9EDE600A717FE /* CurrentPositionModel.swift in Sources */,
 				34817C7F24C21E2300C883A1 /* DefaultValue.swift in Sources */,
 				34817C5E24C0ECD500C883A1 /* DevicesListController.swift in Sources */,
 				34817C6924C0ED8100C883A1 /* Mutex.swift in Sources */,
 				34CED9EE24BB93F600C49DF8 /* AppDelegate.swift in Sources */,
 				34817C6024C0ECE000C883A1 /* DevicesListViewModel.swift in Sources */,
+				3400861124D9C04D0014427E /* Observable+IgnoreNil.swift in Sources */,
+				34B6BF3D24D9D85400A717FE /* StatusItem.swift in Sources */,
 				34817C9A24C242E200C883A1 /* AccelerometerDataManager.swift in Sources */,
+				34B6BF4524D9EDDE00A717FE /* CurrentPositionController.swift in Sources */,
 				34817C5424C0E6D300C883A1 /* FlowCoordinator.swift in Sources */,
 				34817C6F24C0F63600C883A1 /* Timer.swift in Sources */,
 				34817C5624C0E6FA00C883A1 /* HomeViewModel.swift in Sources */,
 				34817C8724C23CE700C883A1 /* HomeItem.swift in Sources */,
-				34817C8E24C2414100C883A1 /* BTConfig.swift in Sources */,
+				3400861D24D9CCD60014427E /* StatusViewModel.swift in Sources */,
+				3400861524D9C8AF0014427E /* CommandsManager.swift in Sources */,
 				34817C7B24C212C900C883A1 /* DeviceCell.swift in Sources */,
 				34817C8F24C2414100C883A1 /* BTDevice.swift in Sources */,
+				34B6BF4824D9EDE800A717FE /* CurrentPositionViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

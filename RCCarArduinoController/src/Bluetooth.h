@@ -11,14 +11,20 @@ class Bluetooth {       // The class
     void registerCommandHandler(CommandHandler handler);
     
     void updateAccelerometerData(float x, float y);
+    void updateStatus(long status);
+    void updateHDOP(short hdop);
+    void updatePosition(double lon, double lat);
+
 
     void readCommand(BLEDevice central, BLECharacteristic characteristic);
 
   private:
     BLEService btService;
     BLELongCharacteristic commandCharacteristic;
-    BLEShortCharacteristic accelerometerBTChar;
-    BLECharCharacteristic trackingSessionChar;
+    BLELongCharacteristic statusCharacteristic;
+    BLEShortCharacteristic accelerometerCharacteristic;
+    BLEShortCharacteristic hdopCharacteristic;
+    BLEDoubleCharacteristic currentPositionCharacteristic;
 
     BLEDevice central();
 

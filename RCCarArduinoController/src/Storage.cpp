@@ -25,15 +25,37 @@ bool Storage::startGPSSession(unsigned int carID, uint32_t rawDate, uint32_t raw
 
   sessionFilename = directory + "/" + std::to_string(rawTime) + ".log";
 
+  bool somethingFailed = false;
   File file = SD.open(sessionFilename.c_str(), FILE_WRITE);
+
+  if (file.write((const uint8_t*)STORAGE_VERSION, sizeof(unsigned short)) == 0) {
+    Serial.print("Failed to write version to file: "); Serial.println(sessionFilename.c_str());
+    somethingFailed = true;
+  }
+
   if (file.write((const uint8_t*)&carID, sizeof(unsigned int)) == 0) {
     Serial.print("Failed to write cardID to file: "); Serial.println(sessionFilename.c_str());
-    file.close();
-    sessionFilename = "";
-    return false;
+    somethingFailed = true;
+  }
+
+  if (file.write((const uint8_t*)&rawDate, sizeof(uint32_t)) == 0) {
+    Serial.print("Failed to write rawDate to file: "); Serial.println(sessionFilename.c_str());
+    somethingFailed = true;
+  }
+
+  if (file.write((const uint8_t*)&rawTime, sizeof(uint32_t)) == 0) {
+    Serial.print("Failed to write rawTime to file: "); Serial.println(sessionFilename.c_str());
+    somethingFailed = true;
   }
 
   file.close();
+
+  if (somethingFailed) {
+    SD.remove(sessionFilename.c_str());
+    sessionFilename = "";
+    return false;
+  }
+  
   return true;
 }
 
@@ -77,12 +99,12 @@ bool Storage::storeGPSData(byte* data) {
   hdopBytes.bytes[1] = data[21];
 
   // storage.storeSessionRecord(data);
-  Serial.print("Hour "); Serial.println(hour); 
-  Serial.print("Minute "); Serial.println(minute);
-  Serial.print("Second "); Serial.println(second);
-  Serial.print("lon "); Serial.println(lonBytes.value, 6);
-  Serial.print("lat "); Serial.println(latBytes.value, 6);
-  Serial.print("altitude "); Serial.println(altBytes.value);
+  // Serial.print("Hour "); Serial.println(hour); 
+  // Serial.print("Minute "); Serial.println(minute);
+  // Serial.print("Second "); Serial.println(second);
+  // Serial.print("lon "); Serial.println(lonBytes.value, 6);
+  // Serial.print("lat "); Serial.println(latBytes.value, 6);
+  // Serial.print("altitude "); Serial.println(altBytes.value);
   Serial.print("HDOP (raw) "); Serial.println(hdopBytes.value);
   return true;
 }

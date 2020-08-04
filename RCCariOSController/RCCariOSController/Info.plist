@@ -46,5 +46,7 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Shows position</string>
 </dict>
 </plist>

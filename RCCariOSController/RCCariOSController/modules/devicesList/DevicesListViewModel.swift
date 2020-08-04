@@ -15,7 +15,7 @@ struct DevicesListFlow {
 }
 
 protocol DevicesListViewModel {
-    var devicesStream: Driver<[BTDevice]> { get }
+    var devicesStream: Driver<BTConnectionStatus> { get }
 
     func close()
 
@@ -40,9 +40,9 @@ class DevicesListViewModelImpl {
 }
 
 extension DevicesListViewModelImpl: DevicesListViewModel {
-    var devicesStream: Driver<[BTDevice]> {
+    var devicesStream: Driver<BTConnectionStatus> {
         return model.devicesStream
-            .asDriver(onErrorJustReturn: [])
+            .asDriver(onErrorJustReturn: BTConnectionStatus(state: .disconnected, connectedDevice: nil, devices: []))
     }
 
     func tapOnConnectButton(with device: BTDevice) {

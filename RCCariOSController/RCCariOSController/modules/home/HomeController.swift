@@ -21,11 +21,21 @@ class HomeController: UIViewController {
     var bag = DisposeBag()
     let viewModel: HomeViewModel
 
+    private var connectionStatus: BTConnectionStatus = .default
+
     lazy var items: [HomeItem] = {
         return [
-            HomeItem(title: "Dashboard", action: { [weak self] in self?.viewModel.dashboardTapped() }),
-            HomeItem(title: "gps", action: { }),
-            HomeItem(title: "settings", action: { }),
+            HomeItem(
+                title: "Dashboard",
+                enabledForBTStates: [.disconnected, .connected],
+                action: { [weak self] in self?.viewModel.dashboardTapped() }
+            ),
+            HomeItem(title: "Car's position", enabledForBTStates: [.connected], action: { [weak self] in self?.viewModel.currentPositionTapped() }),
+            HomeItem(
+                title: "Status",
+                enabledForBTStates: [.connected],
+                action: { [weak self] in self?.viewModel.statusTapped() }
+            )
         ]
     }()
 
@@ -39,6 +49,7 @@ class HomeController: UIViewController {
         navigationItem.title = "Home"
         collectionView.register(UINib(nibName: "HomeCell", bundle: nil), forCellWithReuseIdentifier: "HomeCell")
         updateRightBarButtonItem(device: nil)
+        updateLayout()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -51,16 +62,31 @@ class HomeController: UIViewController {
         bag = DisposeBag()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateLayout()
+    }
+
+    func updateLayout() {
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+        let spacing: CGFloat = 10
+        let width = collectionView.bounds.size.width / 5
+        layout.itemSize = CGSize(width: width, height: 70)
+        layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     func subscribeToBTManager() {
-        deps.btManager.devicesStream
-            .map { $0.0 }
+        deps.btManager.bluetoothConnectionStream
             .observeOn(MainScheduler.instance)
             .subscribe(
-                onNext: { [weak self] connectedDevice in self?.updateRightBarButtonItem(device: connectedDevice) }
+                onNext: { [weak self] connectionStatus in
+                    self?.updateRightBarButtonItem(device: connectionStatus.connectedDevice)
+                    self?.updateUI(with: connectionStatus)
+                }
             )
             .disposed(by: bag)
     }
@@ -74,6 +100,11 @@ class HomeController: UIViewController {
         )
     }
 
+    func updateUI(with connectionStatus: BTConnectionStatus) {
+        self.connectionStatus = connectionStatus
+        collectionView.reloadData()
+    }
+
     @objc
     func showConnect() {
         viewModel.connectTapped()
@@ -82,7 +113,10 @@ class HomeController: UIViewController {
 
 extension HomeController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        items[indexPath.row].action()
+        let item = items[indexPath.row]
+        if item.enabledForBTStates.contains(connectionStatus.state) {
+            item.action()
+        }
     }
 }
 
@@ -96,6 +130,12 @@ extension HomeController: UICollectionViewDataSource {
         let item = items[indexPath.row]
 
         cell.title.text = item.title
+
+        if item.enabledForBTStates.contains(connectionStatus.state) {
+            cell.title.textColor = .black
+        } else {
+            cell.title.textColor = .darkGray
+        }
 
         return cell
     }

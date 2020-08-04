@@ -1,5 +1,5 @@
 //
-//  HomeItem.swift
+//  HomeCell.swift
 //  RCCariOSController
 //
 //  Created by Michal Fousek on 17/07/2020.
@@ -7,9 +7,8 @@
 //
 
 import Foundation
+import UIKit
 
-struct HomeItem {
-    let title: String
-    let enabledForBTStates: [BTConnectionState]
-    let action: () -> Void
+class StatusCell: UICollectionViewCell {
+    @IBOutlet var title: UILabel!
 }
