@@ -19,6 +19,7 @@ class DashboardModelImpl {
 
     struct Dependencies {
         let accelerometerManager = DI.getAccelerometerDataManager()
+        let btManager = DI.getBTManager()
     }
 
     let deps = Dependencies()
@@ -36,7 +37,9 @@ extension DashboardModelImpl: DashboardModel {
             }
     }
 
-    func start() { deps.accelerometerManager.start() }
+    func start() {
+        deps.accelerometerManager.start()
+    }
     func stop() { deps.accelerometerManager.stop() }
 }
 

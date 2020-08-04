@@ -18,11 +18,13 @@ extension DI {
 enum BTCharacteristic: CaseIterable {
     case accelerometer
     case config
+    case trackingSession
 
     var uuid: CBUUID {
         switch self {
         case .accelerometer: return CBUUID(string: "3178812e-f8ca-48cb-93f6-a3387bf41a63")
         case .config: return CBUUID(string: "f6791979-f52a-4d4a-98d8-af5c3ea3cf68")
+        case .trackingSession: return CBUUID(string: "57710079-3d51-49bf-8009-5ddbc0a6ba94")
         }
     }
 }
@@ -202,6 +204,10 @@ extension BTManagerImpl: CBPeripheralDelegate {
                 case BTCharacteristic.config.uuid:
                     connectedDevice?.characteristics[.config] = characteristic
                     print("Config characteristic found")
+
+                case BTCharacteristic.trackingSession.uuid:
+                    connectedDevice?.characteristics[.trackingSession] = characteristic
+                    print("Tracking session characteristic found.")
 
                 default:
                     print("Found unknown characteristic")

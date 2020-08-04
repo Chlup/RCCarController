@@ -1,101 +1,201 @@
 #include <Arduino.h>
 #include <ArduinoBLE.h>
-#include <Servo.h>
-#include <Arduino_LSM9DS1.h>
+#include <SD.h> 
 
-//https://github.com/NikodemBartnik/rc_robot/blob/master/rc_robot_with_arduino/rc_robot_with_arduino.ino
-//https://learn.openenergymonitor.org/electricity-monitoring/pulse-counting/interrupt-based-pulse-counter
+#include "constants.h"
+#include "Bluetooth.h"
+#include "Accelerometer.h"
+#include "GPS.h"
+#include "Storage.h"
+#include "CommandCenter.h"
 
+CommandCenter commandCenter;
+Bluetooth ble;
+Accelerometer accelerometer;
+GPS gps;
+Storage storage(10);
 
-Servo stering; 
+File myFile;
 
-uint32_t config = 0;
-int counter = 0;
+bool trackingSessionInProgress = false;
 
-uint32_t bleConfigEnableAccelerometer = 1 << 0;
+const unsigned long mainLoopMaxLength = 300;
+const unsigned long gpsLoopMaxLength = 100;
 
-BLEService btService("07838daa-b3df-4ca2-892c-0844b6969519");
-BLEIntCharacteristic configBTChar("f6791979-f52a-4d4a-98d8-af5c3ea3cf68", BLERead | BLEWrite | BLENotify);
-BLEShortCharacteristic accelerometerBTChar("3178812e-f8ca-48cb-93f6-a3387bf41a63", BLERead | BLENotify);
+const unsigned int carID = 1;
 
-int inputSample[5] = {0, 0, 0, 0, 0};
+void receivedTrackingRawCommand(std::string rawCommand) {
+  Serial.print("Command "); Serial.println(rawCommand.c_str());
+}
 
-void readConfig(BLEDevice central, BLECharacteristic characteristic) {
-  Serial.println("Read config");
-  configBTChar.readValue(config);
-
-  Serial.println(config);
-  if (config & bleConfigEnableAccelerometer) {
-    Serial.println("enable accelerometer");
-  } else {
-    Serial.println("disable accelerometer");
-  }
+void receivedCommand(long command) {
+  Serial.print("Received command "); Serial.println(command);
+  commandCenter.update(command);
 }
 
 void setup() {
   Serial.begin(9600);
-  // stering.attach(10, 900, 2100);
+  Serial1.begin(9600);
 
-  if (!IMU.begin()) {
-    Serial.println("Failed to initialize IMU!");
+  digitalWrite(LED_BUILTIN, HIGH);
+
+  delay(3000);  
+  Serial.println("Setup");
+  
+  bool initialized = true;
+
+  if (!accelerometer.setup()) {
+    Serial.print("Fialed to initialize accelerometer.");
+    initialized = false;
   }
 
-  if (BLE.begin()) {
-    BLE.setLocalName("ChlupsArduino");
-    BLE.setDeviceName("ChlupsArduino");
-    BLE.setAdvertisedService(btService);
-    btService.addCharacteristic(accelerometerBTChar);
-    btService.addCharacteristic(configBTChar);
-    BLE.addService(btService);
-    BLE.advertise();
+  if (ble.setup()) {
+    ble.registerCommandHandler(receivedCommand);
+  } else{
+    Serial.println("Failed to initialize bluetooth.");
+    initialized = false;
+  }
 
-    configBTChar.setEventHandler(BLEWritten, readConfig);
+  if (!storage.setup()) {
+    Serial.println("Failed to initialize SD card.");
+    initialized = false;
+  }
+
+  if (initialized) {
+    digitalWrite(LED_BUILTIN, LOW);
   } else {
-    Serial.println("starting BLE failed!");
+    Serial.println("Initialization failed. Something went horribly wrong.");
+    while (true);
   }
+
+  // if (!SD.begin(10)) {
+  //   Serial.println("initialization failed!");
+  //   return;
+  // }
+  // Serial.println("initialization done.");
+
+  // if (!SD.exists("somedir")) {
+  //   if (!SD.mkdir("somedir")) {
+  //     Serial.println("Can't create directory");
+  //   } else {
+  //     Serial.println("Directory created");
+  //   }
+  // } else {
+  //   Serial.println("Directory exists");
+  // }
+
+  // // open the file. note that only one file can be open at a time,
+  // // so you have to close this one before opening another.
+  // myFile = SD.open("somedir/test.txt", FILE_WRITE);
+  
+  // // if the file opened okay, write to it:
+  // if (myFile) {
+  //   Serial.print("Writing to test.txt...");
+  //   myFile.println("testing 1, 2, 3.");
+  // // close the file:
+  //   myFile.close();
+  //   Serial.println("done.");
+  // } else {
+  //   // if the file didn't open, print an error:
+  //   Serial.println("error opening test.txt");
+  // }
+  
+  // // re-open the file for reading:
+  // myFile = SD.open("test.txt");
+  // if (myFile) {
+  //   Serial.println("test.txt:");
+    
+  //   // read from the file until there's nothing else in it:
+  //   while (myFile.available()) {
+  //     Serial.write(myFile.read());
+  //   }
+  //   // close the file:
+  //   myFile.close();
+  // } else {
+  //   // if the file didn't open, print an error:
+  //   Serial.println("error opening test.txt");
+  // }
 }
 
+
 void loop() {
-  BLEDevice central = BLE.central();
+  unsigned long start = millis();
 
-  if (central.connected()) {
-    Serial.print("Connected to central: ");
-    Serial.println(central.address());
+  gps.readSerialData(100);
 
-    while (central.connected()) {
+  // BLEDevice btDevice = ble.central();
+  bool btIsConnected = ble.isConnected();
 
-      if (config & bleConfigEnableAccelerometer) {
-        Serial.println("Accelerometer sending");
+  if (commandCenter.shouldUpdateAccelerometerData() && btIsConnected) {
+      accelerometer.read();
+      ble.updateAccelerometerData(accelerometer.lastX, accelerometer.lastY);
+  } 
 
-        float x, y, z = 0;
-        short encodedAccelerometerData = 0;
+  // const char* dir = "somedir2";
+  // if (SD.exists(dir)) {
+  //   Serial.println("Dir exists");
+  //   const char* filename = "somedir2/file.txt";
+  //   File file = SD.open(filename, FILE_WRITE);
+  //   if (file) {
+  //     if (file.write("H", sizeof(byte)) > 0) {
+  //       Serial.println("Wrote data to file.");
+  //     } else {
+  //       Serial.print("Failed to write to file: "); Serial.println(filename);
+  //     }
+  //     file.close();
+  //   } else {
+  //     Serial.println("File is not available.");
+  //   }
+  // } else {
+  //   Serial.println("Dire doesn't exist");
+  //   if (SD.mkdir(dir)) {
+  //     Serial.println("Dir created");
+  //   } else {
+  //     Serial.println("Fail to created directory");
+  //   }
+  // }
 
-        if (IMU.accelerationAvailable()) {
-          IMU.readAcceleration(x, y, z);
+  // if (gps.hasValidData() && commandCenter.shouldStartTrackingSession()) {
+  //   if (trackingSessionInProgress) {
+  //     if (gps.hasNewData()) {
+  //       storage.storeGPSData(gps.getData());
+  //     }
+  //   } else {
+  //     trackingSessionInProgress = storage.startGPSSession(carID, gps.rawDate(), gps.rawTime());
+  //     Serial.print("Session in progress "); Serial.println(trackingSessionInProgress);
+  //   }
+  // } else if (trackingSessionInProgress) {
+  //   storage.stopGPSSession();
+  //   trackingSessionInProgress = false;
+  // }
 
-          short sendX = (short)((x * 100) + 100);
-          short sendY = (short)((y * 100) + 100);
+  // std::string gpsLine;
+  // if (ble.shouldLogGPSData()) {
+  // gps.readSerialData(100);
+  // TinyGPSPlus data = gps.data;
+  // gpsLine += std::to_string(data.time.hour());
+  // gpsLine += ",";
+  // gpsLine += std::to_string(data.time.minute());
+  // gpsLine += ",";
+  // gpsLine += std::to_string(data.time.second());
+  // gpsLine += ",";
+  // gpsLine += std::to_string(data.location.lng());
+  // gpsLine += ",";
+  // gpsLine += std::to_string(data.location.lat());
+  // gpsLine += ",";
+  // gpsLine += std::to_string(data.speed.kmph());
+  // gpsLine += ",";
+  // gpsLine += std::to_string(data.altitude.meters());
 
-          encodedAccelerometerData |= sendX;
-          encodedAccelerometerData |= (sendY << 8 );
+  // Serial.println(gpsLine.c_str());
+  // Serial.println(sizeof(short));
 
-          Serial.print(sendX);
-          Serial.print(" ");
-          Serial.print(sendY);
-          Serial.println();
-        } else {
-          Serial.println("Acceleration not available");
-        } 
-        accelerometerBTChar.writeValue(encodedAccelerometerData);
-      }
+  //   // gps.printPosition();
+  // }  
 
-      counter += 1;
-      Serial.println(counter);
-      delay(100);
-    } 
-  } else {
-    Serial.println("Not connected to cental");
+  unsigned long waitFor = mainLoopMaxLength - (millis() - start);
+  if (waitFor > 0) {
+    Serial.print("Wait for "); Serial.println(waitFor);
+    delay(waitFor);
   }
-  
-  delay(100);
 }
