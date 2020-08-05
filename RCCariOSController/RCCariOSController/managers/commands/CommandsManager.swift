@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RxSwift
 
 extension DI {
     static let getCommandsManager = bind(CommandsManager.self) { CommandsManagerImpl.sharedInstance }
@@ -19,6 +20,7 @@ struct Commands: OptionSet {
     static let updateStatus = Commands(rawValue: 1 << 2)
     static let updateHDOP = Commands(rawValue: 1 << 3)
     static let updateCurrentPosition = Commands(rawValue: 1 << 4)
+    static let updateCommands = Commands(rawValue: 1 << 5)
 
     var data: Data {
         var value = rawValue
@@ -57,6 +59,9 @@ protocol CommandsManager {
 
     func startUpdatingCurrentPosition()
     func stopUpdatingCurrentPosition()
+
+    func startRecordingGPS()
+    func stopRecordingGPS()
 }
 
 class CommandsManagerImpl {
@@ -69,6 +74,30 @@ class CommandsManagerImpl {
     private let deps = Dependencies()
     private var command: Commands = []
     private var status: Statuses = []
+    private let bag = DisposeBag()
+    private var previousConnectionStatus: BTConnectionStatus = .default
+
+    init() {
+        subscribeToConnectionStream()
+    }
+
+    func subscribeToConnectionStream() {
+        deps.btManager.bluetoothConnectionStream
+            .subscribe(
+                onNext: { [weak self] connectionStatus in
+                    guard let self = self else { return }
+                    guard connectionStatus.state == .connected, self.previousConnectionStatus.state != .connected else { return }
+                    self.previousConnectionStatus = connectionStatus
+                    self.command.insert(.updateCommands)
+                    self.commit()
+                }
+            )
+            .disposed(by: bag)
+    }
+
+    func subscribeToConfigStream() {
+        
+    }
 }
 
 extension CommandsManagerImpl: CommandsManager {
@@ -84,4 +113,6 @@ extension CommandsManagerImpl: CommandsManager {
     func stopReceivingStatus() { command.remove(.updateStatus) }
     func startUpdatingCurrentPosition() { command.insert(.updateCurrentPosition) }
     func stopUpdatingCurrentPosition() { command.remove(.updateCurrentPosition) }
+    func startRecordingGPS() { command.insert(.startGPSSession) }
+    func stopRecordingGPS() { command.remove(.startGPSSession) }
 }

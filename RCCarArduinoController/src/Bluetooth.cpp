@@ -10,7 +10,7 @@ void _readCommand(BLEDevice central, BLECharacteristic characteristic) {
 
 Bluetooth::Bluetooth() : 
     btService("07838daa-b3df-4ca2-892c-0844b6969519"),
-    commandCharacteristic("f6791979-f52a-4d4a-98d8-af5c3ea3cf68", BLEWrite),
+    commandCharacteristic("f6791979-f52a-4d4a-98d8-af5c3ea3cf68", BLEWrite | BLERead | BLENotify),
     statusCharacteristic("1faa2a5c-0825-48d0-bfa8-e15b84145116", BLERead | BLENotify),
     accelerometerCharacteristic("3178812e-f8ca-48cb-93f6-a3387bf41a63", BLERead | BLENotify),
     hdopCharacteristic("5ea3439d-c263-41ac-a74d-68015b7a7d91", BLERead | BLENotify),
@@ -69,6 +69,10 @@ void Bluetooth::updateHDOP(short hdop) {
 void Bluetooth::updatePosition(double lon, double lat) {
     currentPositionCharacteristic.writeValue(lon);
     currentPositionCharacteristic.writeValue(lat);
+}
+
+void Bluetooth::updateCommands(long command) {
+    commandCharacteristic.writeValue(command);
 }
 
 void Bluetooth::registerCommandHandler(CommandHandler handler) {

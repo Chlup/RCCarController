@@ -5,13 +5,16 @@
 class CommandCenter {
     public:
         void update(long command);
-        bool isUpdated();
+        long getCommand();
 
         bool shouldUpdateStatus();
         long getStatus();
         void didUpdateStatus();
 
         bool shouldUpdateHDOP();
+
+        bool shouldUpdateCommands();
+        void didUpdateCommands();
 
         void accelerometerSetupError();
         void accelerometerReadError();
@@ -37,6 +40,7 @@ class CommandCenter {
         const long COMMAND_UPDATE_STATUS = 1 << 2;
         const long COMMAND_UPDATE_HDOP = 1 << 3;
         const long COMMAND_SEND_POSITION = 1 << 4;
+        const long COMMAND_SEND_COMMANDS = 1 << 5;
         
         bool statusUpdated = false;
         long status = 0;

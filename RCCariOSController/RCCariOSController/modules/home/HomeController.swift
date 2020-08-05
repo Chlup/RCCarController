@@ -30,6 +30,7 @@ class HomeController: UIViewController {
                 enabledForBTStates: [.disconnected, .connected],
                 action: { [weak self] in self?.viewModel.dashboardTapped() }
             ),
+            HomeItem(title: "GPS recording", enabledForBTStates: [.connected], action: { [weak self] in self?.viewModel.gpsRecordingTapped() }),
             HomeItem(title: "Car's position", enabledForBTStates: [.connected], action: { [weak self] in self?.viewModel.currentPositionTapped() }),
             HomeItem(
                 title: "Status",
@@ -84,11 +85,19 @@ class HomeController: UIViewController {
             .observeOn(MainScheduler.instance)
             .subscribe(
                 onNext: { [weak self] connectionStatus in
+                    self?.showAlertOnDisconnect(connectionStatus: connectionStatus)
                     self?.updateRightBarButtonItem(device: connectionStatus.connectedDevice)
                     self?.updateUI(with: connectionStatus)
                 }
             )
             .disposed(by: bag)
+    }
+
+    func showAlertOnDisconnect(connectionStatus: BTConnectionStatus) {
+        guard connectionStatus.state == .disconnected, connectionStatus.state != self.connectionStatus.state else { return }
+        let alert = UIAlertController(title: "", message: "Car did disconnect.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in }))
+        present(alert, animated: true, completion: nil)
     }
 
     func updateRightBarButtonItem(device: BTDevice?) {

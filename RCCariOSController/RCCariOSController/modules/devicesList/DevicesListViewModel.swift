@@ -17,7 +17,7 @@ struct DevicesListFlow {
 protocol DevicesListViewModel {
     var devicesStream: Driver<BTConnectionStatus> { get }
 
-    func close()
+    func closeTapped()
 
     func tapOnConnectButton(with device: BTDevice)
     func tapOnRefresh()
@@ -59,5 +59,5 @@ extension DevicesListViewModelImpl: DevicesListViewModel {
 
     func start() { model.start() }
 
-    func close() { flow.close() }
+    func closeTapped() { flow.close() }
 }

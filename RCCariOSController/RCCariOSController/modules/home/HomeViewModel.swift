@@ -13,6 +13,7 @@ struct HomeFlow {
     let dashboardTapped: () -> Void
     let statusTapped: () -> Void
     let currentPositionTapped: () -> Void
+    let gpsRecordingTapped: () -> Void
 }
 
 protocol HomeViewModel {
@@ -20,6 +21,7 @@ protocol HomeViewModel {
     func dashboardTapped()
     func statusTapped()
     func currentPositionTapped()
+    func gpsRecordingTapped()
 }
 
 class HomeViewModelImpl {
@@ -36,5 +38,6 @@ extension HomeViewModelImpl: HomeViewModel {
     func dashboardTapped() { flow.dashboardTapped() }
     func statusTapped() { flow.statusTapped() }
     func currentPositionTapped() { flow.currentPositionTapped() }
+    func gpsRecordingTapped() { flow.gpsRecordingTapped() }
 }
 

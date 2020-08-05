@@ -111,8 +111,8 @@ bool GPS::hasNewData() {
 
     Serial.print("GPS data updated: "); Serial.println(updated);
 
-    // #warning "JUST for DEBUG";
-    // updated = true;
+    #warning "JUST for DEBUG";
+    updated = true;
 
     return updated;
 }

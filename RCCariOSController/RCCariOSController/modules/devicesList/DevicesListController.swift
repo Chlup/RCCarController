@@ -52,7 +52,7 @@ class DevicesListController: UIViewController {
 
     @objc
     private func close() {
-        viewModel.close()
+        viewModel.closeTapped()
     }
 
     @objc

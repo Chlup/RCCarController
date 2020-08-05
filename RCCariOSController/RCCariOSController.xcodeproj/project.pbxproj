@@ -47,6 +47,10 @@
 		34B6BF4724D9EDE600A717FE /* CurrentPositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B6BF4024D9ED0D00A717FE /* CurrentPositionModel.swift */; };
 		34B6BF4824D9EDE800A717FE /* CurrentPositionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B6BF4124D9ED0D00A717FE /* CurrentPositionViewModel.swift */; };
 		34B6BF4A24D9F45400A717FE /* HomeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34B6BF4924D9F42000A717FE /* HomeCell.xib */; };
+		34B6BF5024D9F58700A717FE /* GPSRecordingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B6BF4D24D9F57200A717FE /* GPSRecordingController.swift */; };
+		34B6BF5124D9F58700A717FE /* GPSRecordingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34B6BF4F24D9F57200A717FE /* GPSRecordingController.xib */; };
+		34B6BF5224D9F58700A717FE /* GPSRecordingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B6BF4C24D9F57200A717FE /* GPSRecordingModel.swift */; };
+		34B6BF5324D9F58700A717FE /* GPSRecordingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B6BF4E24D9F57200A717FE /* GPSRecordingViewModel.swift */; };
 		34CED9EE24BB93F600C49DF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CED9ED24BB93F600C49DF8 /* AppDelegate.swift */; };
 		34CED9F224BB93F600C49DF8 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CED9F124BB93F600C49DF8 /* HomeController.swift */; };
 		34CED9F724BB93F700C49DF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34CED9F624BB93F700C49DF8 /* Assets.xcassets */; };
@@ -93,6 +97,10 @@
 		34B6BF4224D9ED0D00A717FE /* CurrentPositionController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurrentPositionController.xib; sourceTree = "<group>"; };
 		34B6BF4324D9ED0D00A717FE /* CurrentPositionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPositionController.swift; sourceTree = "<group>"; };
 		34B6BF4924D9F42000A717FE /* HomeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeCell.xib; sourceTree = "<group>"; };
+		34B6BF4C24D9F57200A717FE /* GPSRecordingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSRecordingModel.swift; sourceTree = "<group>"; };
+		34B6BF4D24D9F57200A717FE /* GPSRecordingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSRecordingController.swift; sourceTree = "<group>"; };
+		34B6BF4E24D9F57200A717FE /* GPSRecordingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPSRecordingViewModel.swift; sourceTree = "<group>"; };
+		34B6BF4F24D9F57200A717FE /* GPSRecordingController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GPSRecordingController.xib; sourceTree = "<group>"; };
 		34CED9EA24BB93F600C49DF8 /* RCCariOSController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RCCariOSController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34CED9ED24BB93F600C49DF8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		34CED9F124BB93F600C49DF8 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
@@ -155,6 +163,7 @@
 				34B6BF3F24D9ED0800A717FE /* currentPosition */,
 				34817C8824C2411F00C883A1 /* dashboard */,
 				34817C4F24C0E6A400C883A1 /* devicesList */,
+				34B6BF4B24D9F56C00A717FE /* gpsRecording */,
 				34817C5024C0E6A400C883A1 /* home */,
 				3400861224D9C7C50014427E /* status */,
 			);
@@ -238,6 +247,17 @@
 				34B6BF4124D9ED0D00A717FE /* CurrentPositionViewModel.swift */,
 			);
 			path = currentPosition;
+			sourceTree = "<group>";
+		};
+		34B6BF4B24D9F56C00A717FE /* gpsRecording */ = {
+			isa = PBXGroup;
+			children = (
+				34B6BF4D24D9F57200A717FE /* GPSRecordingController.swift */,
+				34B6BF4F24D9F57200A717FE /* GPSRecordingController.xib */,
+				34B6BF4C24D9F57200A717FE /* GPSRecordingModel.swift */,
+				34B6BF4E24D9F57200A717FE /* GPSRecordingViewModel.swift */,
+			);
+			path = gpsRecording;
 			sourceTree = "<group>";
 		};
 		34CED9E124BB93F600C49DF8 = {
@@ -353,6 +373,7 @@
 			files = (
 				3400861B24D9CCCE0014427E /* StatusController.xib in Resources */,
 				34B6BF3E24D9D9FD00A717FE /* StatusCell.xib in Resources */,
+				34B6BF5124D9F58700A717FE /* GPSRecordingController.xib in Resources */,
 				34CED9FA24BB93F700C49DF8 /* LaunchScreen.storyboard in Resources */,
 				34817C6D24C0F10700C883A1 /* DevicesListController.xib in Resources */,
 				34CED9F724BB93F700C49DF8 /* Assets.xcassets in Resources */,
@@ -423,9 +444,11 @@
 				34817C8524C23BE900C883A1 /* HomeCell.swift in Sources */,
 				34B6BF3B24D9D7B200A717FE /* StatusCell.swift in Sources */,
 				34817C6224C0ECE800C883A1 /* DevicesListModel.swift in Sources */,
+				34B6BF5224D9F58700A717FE /* GPSRecordingModel.swift in Sources */,
 				34817C9624C2416500C883A1 /* DashboardViewModel.swift in Sources */,
 				34817C9224C2415200C883A1 /* DashboardController.swift in Sources */,
 				34817C9024C2414100C883A1 /* BTManager.swift in Sources */,
+				34B6BF5324D9F58700A717FE /* GPSRecordingViewModel.swift in Sources */,
 				34B6BF4724D9EDE600A717FE /* CurrentPositionModel.swift in Sources */,
 				34817C7F24C21E2300C883A1 /* DefaultValue.swift in Sources */,
 				34817C5E24C0ECD500C883A1 /* DevicesListController.swift in Sources */,
@@ -436,6 +459,7 @@
 				34B6BF3D24D9D85400A717FE /* StatusItem.swift in Sources */,
 				34817C9A24C242E200C883A1 /* AccelerometerDataManager.swift in Sources */,
 				34B6BF4524D9EDDE00A717FE /* CurrentPositionController.swift in Sources */,
+				34B6BF5024D9F58700A717FE /* GPSRecordingController.swift in Sources */,
 				34817C5424C0E6D300C883A1 /* FlowCoordinator.swift in Sources */,
 				34817C6F24C0F63600C883A1 /* Timer.swift in Sources */,
 				34817C5624C0E6FA00C883A1 /* HomeViewModel.swift in Sources */,

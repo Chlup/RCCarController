@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="landscape" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GPSRecordingController" customModule="RCCariOSController" customModuleProvider="target">
+            <connections>
+                <outlet property="button" destination="dSA-oi-oGg" id="tRe-sh-Rqo"/>
+                <outlet property="view" destination="iN0-l3-epB" id="M49-qb-L6l"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dSA-oi-oGg">
+                    <rect key="frame" x="348" y="107" width="200" height="200"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="200" id="7lc-16-9Mk"/>
+                        <constraint firstAttribute="height" constant="200" id="Dw1-Dg-gGN"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="buttonTap" destination="-1" eventType="touchUpInside" id="VgQ-7V-2pj"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="dSA-oi-oGg" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="age-2e-asg"/>
+                <constraint firstItem="dSA-oi-oGg" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="uc8-v1-o5z"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="139" y="153"/>
+        </view>
+    </objects>
+</document>

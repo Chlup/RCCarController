@@ -50,6 +50,10 @@ class FlowCoordinatorImpl {
             currentPositionTapped: { [weak self] in
                 guard let self = self else { return }
                 self.navigationController?.pushViewController(self.makeCurrentPosition(), animated: true)
+            },
+            gpsRecordingTapped: { [weak self] in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(self.makeGPSRecording(), animated: true)
             }
         )
 
@@ -95,6 +99,16 @@ class FlowCoordinatorImpl {
         let model = CurrentPositionModelImpl()
         let viewModel = CurrentPositionViewModelImpl(model: model, flow: flow)
         return CurrentPositionController(viewModel: viewModel)
+    }
+
+    func makeGPSRecording() -> UIViewController {
+        let flow = GPSRecordingFlow(
+            close: { [weak self] in self?.navigationController?.popViewController(animated: true) }
+        )
+
+        let model = GPSRecordingModelImpl()
+        let viewModel = GPSRecordingViewModelImpl(model: model, flow: flow)
+        return GPSRecordingController(viewModel: viewModel)
     }
 }
 

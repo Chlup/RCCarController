@@ -43,6 +43,8 @@ class StatusController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "System status"
+        navigationItem.backBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
         collectionView.register(UINib(nibName: "StatusCell", bundle: nil), forCellWithReuseIdentifier: "StatusCell")
         updateLayout()
     }
@@ -62,6 +64,11 @@ class StatusController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateLayout()
+    }
+
+    @objc
+    private func close() {
+        viewModel.closeTapped()
     }
 
     func subscribedToViewModel() {

@@ -14,7 +14,7 @@ class Bluetooth {       // The class
     void updateStatus(long status);
     void updateHDOP(short hdop);
     void updatePosition(double lon, double lat);
-
+    void updateCommands(long command);
 
     void readCommand(BLEDevice central, BLECharacteristic characteristic);
 

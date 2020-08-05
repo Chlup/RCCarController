@@ -98,13 +98,12 @@ bool Storage::storeGPSData(byte* data) {
   hdopBytes.bytes[0] = data[20];
   hdopBytes.bytes[1] = data[21];
 
-  // storage.storeSessionRecord(data);
-  // Serial.print("Hour "); Serial.println(hour); 
-  // Serial.print("Minute "); Serial.println(minute);
-  // Serial.print("Second "); Serial.println(second);
-  // Serial.print("lon "); Serial.println(lonBytes.value, 6);
-  // Serial.print("lat "); Serial.println(latBytes.value, 6);
-  // Serial.print("altitude "); Serial.println(altBytes.value);
+  Serial.print("Hour "); Serial.println(hour); 
+  Serial.print("Minute "); Serial.println(minute);
+  Serial.print("Second "); Serial.println(second);
+  Serial.print("lon "); Serial.println(lonBytes.value, 6);
+  Serial.print("lat "); Serial.println(latBytes.value, 6);
+  Serial.print("altitude "); Serial.println(altBytes.value);
   Serial.print("HDOP (raw) "); Serial.println(hdopBytes.value);
   return true;
 }

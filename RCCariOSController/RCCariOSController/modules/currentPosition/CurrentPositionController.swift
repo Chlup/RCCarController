@@ -32,6 +32,8 @@ class CurrentPositionController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Car's position"
+        navigationItem.backBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
         locationManager.requestWhenInUseAuthorization()
         map.showsUserLocation = true
     }
@@ -46,6 +48,11 @@ class CurrentPositionController: UIViewController {
         super.viewWillDisappear(animated)
         viewModel.stop()
         bag = DisposeBag()
+    }
+
+    @objc
+    private func close() {
+        viewModel.closeTapped()
     }
 
     func subscribedToViewModel() {

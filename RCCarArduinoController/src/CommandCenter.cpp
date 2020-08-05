@@ -10,10 +10,14 @@ void CommandCenter::update(long command) {
     }
     updateStatus(newStatus);
 
-    // Let's force to send update at least once.
+    // Let's force to send update at least once when this command arrives.
     if (command & COMMAND_UPDATE_STATUS) {
         statusUpdated = true;
     }
+}
+
+long CommandCenter::getCommand() {
+    return command;
 }
 
 bool CommandCenter::shouldUpdateStatus() {
@@ -30,6 +34,14 @@ void CommandCenter::didUpdateStatus() {
 
 bool CommandCenter::shouldUpdateHDOP() {
     return command & COMMAND_UPDATE_HDOP;
+}
+
+bool CommandCenter::shouldUpdateCommands() {
+    return command & COMMAND_SEND_COMMANDS;
+}
+
+void CommandCenter::didUpdateCommands() {
+    command &= ~COMMAND_SEND_COMMANDS;
 }
 
 void CommandCenter::accelerometerSetupError() {
@@ -61,6 +73,7 @@ bool CommandCenter::shouldSendCurrentPosition() {
 }
 
 bool CommandCenter::shouldStartGPSSession() {
+    return true;
     return (command & COMMAND_START_GPS_SESSION);
 }
 

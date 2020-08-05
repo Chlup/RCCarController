@@ -102,6 +102,11 @@ void loop() {
   }
 
   if (btIsConnected) {
+    if (commandCenter.shouldUpdateCommands()) {
+      ble.updateCommands(commandCenter.getCommand());
+      commandCenter.didUpdateCommands();
+    }
+
     if (commandCenter.shouldUpdateAccelerometerData()) {
       if (accelerometer.read()) {
         commandCenter.accelerometerReadFine();
@@ -132,8 +137,6 @@ void loop() {
       ble.updateHDOP(gps.hdop());
     }
   }
-
- 
 
   unsigned long loopLength = millis() - start;
   Serial.print("Loop length: "); Serial.println(loopLength);
