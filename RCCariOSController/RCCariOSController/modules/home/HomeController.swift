@@ -20,47 +20,39 @@ class HomeController: UIViewController {
     let deps = Dependencies()
     var bag = DisposeBag()
     let viewModel: HomeViewModel
-
-    private var connectionStatus: BTConnectionStatus = .default
+    let deviceName: String?
 
     lazy var items: [HomeItem] = {
         return [
-            HomeItem(
-                title: "Dashboard",
-                enabledForBTStates: [.disconnected, .connected],
-                action: { [weak self] in self?.viewModel.dashboardTapped() }
-            ),
-            HomeItem(title: "GPS recording", enabledForBTStates: [.connected], action: { [weak self] in self?.viewModel.gpsRecordingTapped() }),
-            HomeItem(title: "Car's position", enabledForBTStates: [.connected], action: { [weak self] in self?.viewModel.currentPositionTapped() }),
-            HomeItem(
-                title: "Status",
-                enabledForBTStates: [.connected],
-                action: { [weak self] in self?.viewModel.statusTapped() }
-            )
+            HomeItem(title: "Dashboard", action: { [weak self] in self?.viewModel.dashboardTapped() }),
+            HomeItem(title: "GPS recording", action: { [weak self] in self?.viewModel.gpsRecordingTapped() }),
+            HomeItem(title: "Car's position", action: { [weak self] in self?.viewModel.currentPositionTapped() }),
+            HomeItem(title: "Status", action: { [weak self] in self?.viewModel.statusTapped() })
         ]
     }()
 
-    init(viewModel: HomeViewModel) {
+    init(viewModel: HomeViewModel, deviceName: String?) {
         self.viewModel = viewModel
+        self.deviceName = deviceName
         super.init(nibName: "HomeController", bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Home"
+        navigationItem.title = deviceName
         collectionView.register(UINib(nibName: "HomeCell", bundle: nil), forCellWithReuseIdentifier: "HomeCell")
-        updateRightBarButtonItem(device: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Disconnect", style: .done, target: self, action: #selector(disconnect))
+        navigationItem.hidesBackButton = true
         updateLayout()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        subscribeToBTManager()
-    }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        bag = DisposeBag()
     }
 
     override func viewDidLayoutSubviews() {
@@ -71,61 +63,20 @@ class HomeController: UIViewController {
     func updateLayout() {
         guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
         let spacing: CGFloat = 10
-        let width = collectionView.bounds.size.width / 5
+        let width = (collectionView.frame.size.width / 4) - 5 * spacing
         layout.itemSize = CGSize(width: width, height: 70)
         layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func subscribeToBTManager() {
-        deps.btManager.bluetoothConnectionStream
-            .observeOn(MainScheduler.instance)
-            .subscribe(
-                onNext: { [weak self] connectionStatus in
-                    self?.showAlertOnDisconnect(connectionStatus: connectionStatus)
-                    self?.updateRightBarButtonItem(device: connectionStatus.connectedDevice)
-                    self?.updateUI(with: connectionStatus)
-                }
-            )
-            .disposed(by: bag)
-    }
-
-    func showAlertOnDisconnect(connectionStatus: BTConnectionStatus) {
-        guard connectionStatus.state == .disconnected, connectionStatus.state != self.connectionStatus.state else { return }
-        let alert = UIAlertController(title: "", message: "Car did disconnect.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in }))
-        present(alert, animated: true, completion: nil)
-    }
-
-    func updateRightBarButtonItem(device: BTDevice?) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: device == nil ? "Device" : device?.name,
-            style: .plain,
-            target: self,
-            action: #selector(showConnect)
-        )
-    }
-
-    func updateUI(with connectionStatus: BTConnectionStatus) {
-        self.connectionStatus = connectionStatus
-        collectionView.reloadData()
-    }
-
     @objc
-    func showConnect() {
-        viewModel.connectTapped()
+    func disconnect() {
+        viewModel.disconnect()
     }
 }
 
 extension HomeController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let item = items[indexPath.row]
-        if item.enabledForBTStates.contains(connectionStatus.state) {
-            item.action()
-        }
+        items[indexPath.row].action()
     }
 }
 
@@ -139,12 +90,6 @@ extension HomeController: UICollectionViewDataSource {
         let item = items[indexPath.row]
 
         cell.title.text = item.title
-
-        if item.enabledForBTStates.contains(connectionStatus.state) {
-            cell.title.textColor = .black
-        } else {
-            cell.title.textColor = .darkGray
-        }
 
         return cell
     }

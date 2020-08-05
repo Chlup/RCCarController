@@ -23,6 +23,7 @@ class FlowCoordinatorImpl {
 
     struct Dependencies {
         let btManager = DI.getBTManager()
+        let commandsManager = DI.getCommandsManager()
     }
 
     let deps = Dependencies()
@@ -33,12 +34,8 @@ class FlowCoordinatorImpl {
         return UIApplication.shared.windows.first?.rootViewController as? UINavigationController
     }
 
-    private func makeHome() -> UIViewController {
+    private func makeHome(deviceName: String?) -> UIViewController {
         let flow = HomeFlow(
-            connectTapped: { [weak self] in
-                guard let self = self else { return }
-                self.navigationController?.pushViewController(self.makeDevicesList(), animated: true)
-            },
             dashboardTapped: { [weak self] in
                 guard let self = self else { return }
                 self.navigationController?.pushViewController(self.makeDashboard(), animated: true)
@@ -58,12 +55,22 @@ class FlowCoordinatorImpl {
         )
 
         let viewModel = HomeViewModelImpl(flow: flow)
-        return HomeController(viewModel: viewModel)
+        return HomeController(viewModel: viewModel, deviceName: deviceName)
     }
 
     private func makeDevicesList() -> UIViewController {
         let flow = DevicesListFlow(
-            close: { [weak self] in self?.navigationController?.popViewController(animated: true) }
+            didConnectDevice: { [weak self] deviceName in
+                guard let self = self else { return }
+                self.navigationController?.pushViewController(self.makeHome(deviceName: deviceName), animated: true)
+            },
+            didDisconnectDevice: { [weak self] in
+                guard let nc = self?.navigationController else { return }
+                nc.popToRootViewController(animated: true)
+                let alert = UIAlertController(title: "", message: "Car did disconnect.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in }))
+                nc.present(alert, animated: true, completion: nil)
+            }
         )
 
         let model = DevicesListModelImpl()
@@ -115,7 +122,8 @@ class FlowCoordinatorImpl {
 extension FlowCoordinatorImpl: FlowCoordinator {
     func start() -> UIViewController {
         deps.btManager.start()
-        return makeHome()
+        deps.commandsManager.start()
+        return makeDevicesList()
     }
 
 }

@@ -11,13 +11,12 @@ import RxSwift
 import RxCocoa
 
 struct DevicesListFlow {
-    let close: () -> Void
+    let didConnectDevice: (String?) -> Void
+    let didDisconnectDevice: () -> Void
 }
 
 protocol DevicesListViewModel {
     var devicesStream: Driver<BTConnectionStatus> { get }
-
-    func closeTapped()
 
     func tapOnConnectButton(with device: BTDevice)
     func tapOnRefresh()
@@ -33,15 +32,34 @@ class DevicesListViewModelImpl {
     let deps = Dependencies()
     let model: DevicesListModel
     let flow: DevicesListFlow
+
+    private var status: BTConnectionStatus = .default
+
     init(model: DevicesListModel, flow: DevicesListFlow) {
         self.model = model
         self.flow = flow
+    }
+
+    private func process(new connectionStatus: BTConnectionStatus) {
+        defer { status = connectionStatus }
+        guard connectionStatus.state != status.state else { return }
+
+        switch connectionStatus.state {
+        case .disconnected:
+            flow.didDisconnectDevice()
+        case .connected:
+            flow.didConnectDevice(connectionStatus.connectedDevice?.name)
+        case .connecting:
+            break
+        }
     }
 }
 
 extension DevicesListViewModelImpl: DevicesListViewModel {
     var devicesStream: Driver<BTConnectionStatus> {
         return model.devicesStream
+            .observeOn(MainScheduler.instance)
+            .do(onNext: { [weak self] connectionStatus in self?.process(new: connectionStatus) })
             .asDriver(onErrorJustReturn: BTConnectionStatus(state: .disconnected, connectedDevice: nil, devices: []))
     }
 
@@ -58,6 +76,4 @@ extension DevicesListViewModelImpl: DevicesListViewModel {
     }
 
     func start() { model.start() }
-
-    func closeTapped() { flow.close() }
 }

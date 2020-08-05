@@ -1,6 +1,13 @@
 #include "CommandCenter.h"
 
 void CommandCenter::update(long command) {
+    // In case that client sends us `COMMAND_SEND_COMMANDS` we expect that it wants just get current commands what we have. So in this case don't update `this->command` otherwise 
+    // we reset what we have.
+    if (command == COMMAND_SEND_COMMANDS) {
+        this->command = this->command | COMMAND_SEND_COMMANDS;
+        return;
+    }
+
     this->command = command;
     long newStatus = 0;
     if (shouldStartGPSSession()) {
@@ -73,7 +80,6 @@ bool CommandCenter::shouldSendCurrentPosition() {
 }
 
 bool CommandCenter::shouldStartGPSSession() {
-    return true;
     return (command & COMMAND_START_GPS_SESSION);
 }
 
@@ -103,6 +109,16 @@ void CommandCenter::gpsHasValidData(bool hasValidData) {
         newStatus = status | STATUS_GPS_HAS_VALID_DATA;
     } else {
         newStatus = status & ~STATUS_GPS_HAS_VALID_DATA;
+    }
+    updateStatus(newStatus);
+}
+
+void CommandCenter::errorReadingGPSData(bool error) {
+    long newStatus = 0;
+    if (error) {
+        newStatus = status | STATUS_ERROR_READING_GPS_DATA;
+    } else {
+        newStatus = status & ~STATUS_ERROR_READING_GPS_DATA;
     }
     updateStatus(newStatus);
 }

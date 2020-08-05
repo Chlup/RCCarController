@@ -15,6 +15,12 @@ extension DI {
 
 struct Commands: OptionSet {
     let rawValue: Int32
+    init(rawValue: Int32) { self.rawValue = rawValue }
+
+    init(data: Data) {
+        rawValue = data.withUnsafeBytes { $0.load(as: Int32.self) }
+    }
+
     static let enableAccelerometer = Commands(rawValue: 1 << 0)
     static let startGPSSession = Commands(rawValue: 1 << 1)
     static let updateStatus = Commands(rawValue: 1 << 2)
@@ -43,9 +49,11 @@ struct Statuses: OptionSet {
     static let shouldStartGPSSession = Statuses(rawValue: 1 << 4)
     static let gpsSessionInProgress = Statuses(rawValue: 1 << 5)
     static let storeGPSDataError = Statuses(rawValue: 1 << 6)
+    static let errorReadingGPSData = Statuses(rawValue: 1 << 7)
 }
 
 protocol CommandsManager {
+    func start()
     func commit()
 
     func startReceivingAccelerometerData()
@@ -75,32 +83,25 @@ class CommandsManagerImpl {
     private var command: Commands = []
     private var status: Statuses = []
     private let bag = DisposeBag()
-    private var previousConnectionStatus: BTConnectionStatus = .default
 
-    init() {
-        subscribeToConnectionStream()
-    }
+    init() { }
 
-    func subscribeToConnectionStream() {
-        deps.btManager.bluetoothConnectionStream
+    func subscribeToCommandsStream() {
+        deps.btManager.receivedCommandsStream
+            .map { Commands(data: $0.data) }
+            .debug()
             .subscribe(
-                onNext: { [weak self] connectionStatus in
-                    guard let self = self else { return }
-                    guard connectionStatus.state == .connected, self.previousConnectionStatus.state != .connected else { return }
-                    self.previousConnectionStatus = connectionStatus
-                    self.command.insert(.updateCommands)
-                    self.commit()
-                }
+                onNext: { [weak self] receivedCommand in self?.command = receivedCommand }
             )
             .disposed(by: bag)
-    }
-
-    func subscribeToConfigStream() {
-        
     }
 }
 
 extension CommandsManagerImpl: CommandsManager {
+    func start() {
+        subscribeToCommandsStream()
+    }
+
     func commit() {
         deps.btManager.updateCommand(command: command)
     }

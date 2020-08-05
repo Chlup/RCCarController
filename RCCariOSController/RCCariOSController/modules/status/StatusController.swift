@@ -15,22 +15,25 @@ class StatusController: UIViewController {
     let viewModel: StatusViewModel
     var bag = DisposeBag()
 
-    private var data = StatusData(status: [], hdop: 0)
+    private var status: Statuses = []
+    private var hdop: Int16 = 0
 
     lazy var items: [StatusItem] = {
         return [
+            StatusItem(title: "GPS has valid data", mask: .gpsHasValidData, okIfEnabled: true, isHDOP: false),
+            StatusItem(title: "Error reading GPS data", mask: .errorReadingGPSData, okIfEnabled: false, isHDOP: false),
+            StatusItem(title: "HDOP", mask: [], okIfEnabled: true, isHDOP: true),
             StatusItem(title: "Accelerator setup error", mask: .accelerometerSetupError, okIfEnabled: false, isHDOP: false),
             StatusItem(title: "Accelerator read error", mask: .accelerometerReadError, okIfEnabled: false, isHDOP: false),
             StatusItem(title: "Storage setup error", mask: .storageSetupError, okIfEnabled: false, isHDOP: false),
-            StatusItem(title: "GPS valid data", mask: .gpsHasValidData, okIfEnabled: true, isHDOP: false),
-            StatusItem(title: "Should Start GPS Sessions", mask: .shouldStartGPSSession, okIfEnabled: true, isHDOP: false),
-            StatusItem(title: "GPS session in progress", mask: .gpsSessionInProgress, okIfEnabled: true, isHDOP: false),
-            StatusItem(title: "Store GPS Data Error", mask: .storeGPSDataError, okIfEnabled: false, isHDOP: false),
-            StatusItem(title: "HDOP", mask: [], okIfEnabled: true, isHDOP: true)
+            StatusItem(title: "Should Start GPS recording", mask: .shouldStartGPSSession, okIfEnabled: true, isHDOP: false),
+            StatusItem(title: "GPS recording in progress", mask: .gpsSessionInProgress, okIfEnabled: true, isHDOP: false),
+            StatusItem(title: "Store GPS data Error", mask: .storeGPSDataError, okIfEnabled: false, isHDOP: false)
         ]
     }()
     
     @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var loader: UIActivityIndicatorView!
 
     init(viewModel: StatusViewModel) {
         self.viewModel = viewModel
@@ -73,7 +76,6 @@ class StatusController: UIViewController {
 
     func subscribedToViewModel() {
         viewModel.statusStream
-            .debug()
             .drive(
                 onNext: { [weak self] statusData in self?.updateUI(with: statusData) }
             )
@@ -81,14 +83,24 @@ class StatusController: UIViewController {
     }
 
     func updateUI(with statusData: StatusData) {
-        data = statusData
-        collectionView.reloadData()
+        switch statusData {
+        case .loading:
+            loader.startAnimating()
+            collectionView.isHidden = true
+
+        case let .loaded(status, hdop):
+            loader.stopAnimating()
+            collectionView.isHidden = false
+            self.status = status
+            self.hdop = hdop
+            collectionView.reloadData()
+        }
     }
 
     func updateLayout() {
         guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
         let spacing: CGFloat = 10
-        layout.itemSize = CGSize(width: (collectionView.frame.size.width / 3) - 2 * spacing, height: 60)
+        layout.itemSize = CGSize(width: (collectionView.frame.size.width / 4) - 5 * spacing, height: 60)
         layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
     }
 }
@@ -112,18 +124,22 @@ extension StatusController: UICollectionViewDataSource {
         if item.isHDOP {
             let postfix: String
             let color: UIColor
-            switch data.hdop {
-            case 0...100:
-                postfix = "Ideal"
+            switch hdop {
+            case 0:
+                postfix = ""
+                color = .red
+
+            case 1...100:
+                postfix = "Best"
                 color = .green
 
             case 101...200:
-                postfix = "Excelent"
-                color = .yellow
+                postfix = "Still great"
+                color = .green
 
             case 201...500:
                 postfix = "Good"
-                color = .orange
+                color = .yellow
 
             case 501...1000:
                 postfix = "Moderate"
@@ -131,19 +147,19 @@ extension StatusController: UICollectionViewDataSource {
 
             case 1001...2000:
                 postfix = "Fair"
-                color = .red
+                color = .orange
 
             default:
                 postfix = "Poor"
                 color = .red
             }
 
-            let hdop = Double(data.hdop) / 100
+            let hdop = Double(self.hdop) / 100
             cell.title.text = "HDOP(\(hdop)) \(postfix)"
             cell.contentView.backgroundColor = color
 
         } else {
-            var hasMask = data.status.contains(item.mask)
+            var hasMask = status.contains(item.mask)
             hasMask = item.okIfEnabled ? hasMask : !hasMask
 
             if hasMask {

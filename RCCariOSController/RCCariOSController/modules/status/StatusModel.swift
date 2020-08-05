@@ -9,9 +9,9 @@
 import Foundation
 import RxSwift
 
-struct StatusData {
-    let status: Statuses
-    let hdop: Int16
+enum StatusData {
+    case loading
+    case loaded(Statuses, Int16)
 }
 
 protocol StatusModel {
@@ -41,7 +41,8 @@ extension StatusModelImpl: StatusModel {
         let hdopStream = deps.btManager.hdopDataStream
             .map { $0.data.withUnsafeBytes { $0.load(as: Int16.self) } }
 
-        return Observable.combineLatest(statusStream, hdopStream) { StatusData(status: $0, hdop: $1) }
+        return Observable.combineLatest(statusStream, hdopStream) { .loaded($0, $1) }
+            .startWith(.loading)
     }
 
     func start() {

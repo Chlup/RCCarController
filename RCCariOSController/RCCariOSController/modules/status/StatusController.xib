@@ -10,6 +10,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StatusController" customModule="RCCariOSController" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="ZiT-mk-sYk" id="PEl-Z6-R6N"/>
+                <outlet property="loader" destination="o07-oA-KaZ" id="qnl-3u-BYM"/>
                 <outlet property="view" destination="iN0-l3-epB" id="M49-qb-L6l"/>
             </connections>
         </placeholder>
@@ -18,6 +19,9 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="o07-oA-KaZ">
+                    <rect key="frame" x="197" y="438" width="20" height="20"/>
+                </activityIndicatorView>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="ZiT-mk-sYk">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -37,6 +41,8 @@
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ZiT-mk-sYk" secondAttribute="trailing" id="AcJ-d5-mR4"/>
                 <constraint firstItem="ZiT-mk-sYk" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="Tqq-xk-1zI"/>
+                <constraint firstItem="o07-oA-KaZ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="VUi-NA-T7e"/>
+                <constraint firstItem="o07-oA-KaZ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="o7a-4C-esN"/>
                 <constraint firstItem="ZiT-mk-sYk" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="sUi-DD-PhJ"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="ZiT-mk-sYk" secondAttribute="bottom" id="voe-0K-QM5"/>
             </constraints>

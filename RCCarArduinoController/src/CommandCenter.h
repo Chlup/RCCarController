@@ -32,6 +32,7 @@ class CommandCenter {
         void storeGPSDataFine();
 
         void gpsHasValidData(bool hasValidData);
+        void errorReadingGPSData(bool error);
         
     private:
         long command = 0;
@@ -51,6 +52,7 @@ class CommandCenter {
         const long STATUS_SHOULD_START_GPS_SESSION = 1 << 4;
         const long STATUS_GPS_SESSION_IN_PROGRESS = 1 << 5;
         const long STATUS_STORE_GPS_DATA_ERROR = 1 << 6;
+        const long STATUS_ERROR_READING_GPS_DATA = 1 << 7;
 
         void updateStatus(long status);
 };

@@ -36,7 +36,7 @@ class StatusViewModelImpl {
 
 extension StatusViewModelImpl: StatusViewModel {
     var statusStream: Driver<StatusData> {
-        return model.statusStream.asDriver(onErrorJustReturn: StatusData(status: [], hdop: 0))
+        return model.statusStream.asDriver(onErrorJustReturn: .loading)
     }
 
     func closeTapped() { flow.close() }

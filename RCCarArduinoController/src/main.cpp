@@ -19,8 +19,9 @@ File myFile;
 
 bool trackingSessionInProgress = false;
 bool onePositionSent = false;
+bool oneHDOPSent = false;
 
-const unsigned long mainLoopMaxLength = 300;
+const unsigned long mainLoopMaxLength = 400;
 const unsigned long gpsLoopMaxLength = 50;
 
 const unsigned int carID = 1;
@@ -75,7 +76,8 @@ void loop() {
   bool btIsConnected = ble.isConnected();
 
   bool gpsHasValidData = gps.hasValidData();
-  commandCenter.gpsHasValidData(gpsHasValidData && !gps.errorReadingGPSData());
+  commandCenter.gpsHasValidData(gpsHasValidData);
+  commandCenter.errorReadingGPSData(gps.errorReadingGPSData());
 
   if (gpsHasValidData && commandCenter.shouldStartGPSSession()) {
     if (trackingSessionInProgress) {
@@ -103,8 +105,10 @@ void loop() {
 
   if (btIsConnected) {
     if (commandCenter.shouldUpdateCommands()) {
-      ble.updateCommands(commandCenter.getCommand());
+      Serial.println("Sending commands");
+      // Let's remove this from commands because we don't want to send this back to client and cause infinite loop. Clients are stupid right?
       commandCenter.didUpdateCommands();
+      ble.updateCommands(commandCenter.getCommand());
     }
 
     if (commandCenter.shouldUpdateAccelerometerData()) {
@@ -132,10 +136,15 @@ void loop() {
       commandCenter.didUpdateStatus();
     }
 
-    if (commandCenter.shouldUpdateHDOP() && gps.isHDOPUpdated()) {
-      Serial.println("Updating HDOP");
-      ble.updateHDOP(gps.hdop());
-    }
+    if (commandCenter.shouldUpdateHDOP()) {
+      if (!oneHDOPSent || gps.isHDOPUpdated()) {
+        Serial.println("Updating HDOP");
+        ble.updateHDOP(gps.hdop());
+        oneHDOPSent = true;
+      } 
+    } else {
+      oneHDOPSent = false;
+    } 
   }
 
   unsigned long loopLength = millis() - start;

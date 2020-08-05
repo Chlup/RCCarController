@@ -36,23 +36,15 @@ class DevicesListController: UIViewController {
         table.refreshControl = UIRefreshControl()
         table.refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
         navigationItem.title = "Devices"
-        navigationItem.backBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(close))
-    }
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(refresh))
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         subscribeToViewModel()
         viewModel.start()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        bag = DisposeBag()
-    }
-
-    @objc
-    private func close() {
-        viewModel.closeTapped()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        refresh()
     }
 
     @objc

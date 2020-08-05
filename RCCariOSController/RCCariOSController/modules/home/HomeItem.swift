@@ -10,6 +10,5 @@ import Foundation
 
 struct HomeItem {
     let title: String
-    let enabledForBTStates: [BTConnectionState]
     let action: () -> Void
 }

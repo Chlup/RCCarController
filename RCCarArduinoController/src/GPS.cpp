@@ -65,7 +65,7 @@ uint32_t GPS::rawTime() {
 }
 
 bool GPS::hasValidData() {
-    return (gps.time.isValid() && gps.location.isValid() && gps.altitude.isValid() && gps.hdop.isValid());
+    return gps.time.isValid() && gps.location.isValid() && gps.altitude.isValid() && gps.hdop.isValid();
 }
 
 bool GPS::hasNewData() {
@@ -111,8 +111,8 @@ bool GPS::hasNewData() {
 
     Serial.print("GPS data updated: "); Serial.println(updated);
 
-    #warning "JUST for DEBUG";
-    updated = true;
+    // #warning "JUST for DEBUG";
+    // updated = true;
 
     return updated;
 }

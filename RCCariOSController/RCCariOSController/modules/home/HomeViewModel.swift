@@ -9,7 +9,6 @@
 import Foundation
 
 struct HomeFlow {
-    let connectTapped: () -> Void
     let dashboardTapped: () -> Void
     let statusTapped: () -> Void
     let currentPositionTapped: () -> Void
@@ -17,7 +16,7 @@ struct HomeFlow {
 }
 
 protocol HomeViewModel {
-    func connectTapped()
+    func disconnect()
     func dashboardTapped()
     func statusTapped()
     func currentPositionTapped()
@@ -26,7 +25,12 @@ protocol HomeViewModel {
 
 class HomeViewModelImpl {
 
+    struct Dependencies {
+        let btManager = DI.getBTManager()
+    }
+
     let flow: HomeFlow
+    private let deps = Dependencies()
 
     init(flow: HomeFlow) {
         self.flow = flow
@@ -34,7 +38,7 @@ class HomeViewModelImpl {
 }
 
 extension HomeViewModelImpl: HomeViewModel {
-    func connectTapped() { flow.connectTapped() }
+    func disconnect() { deps.btManager.disconnect() }
     func dashboardTapped() { flow.dashboardTapped() }
     func statusTapped() { flow.statusTapped() }
     func currentPositionTapped() { flow.currentPositionTapped() }
